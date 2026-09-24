@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ClimbOS — Training Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #1c2024;
+    --bg-alt: #181b1e;
+    --panel: #262b30;
+    --panel-alt: #2f353b;
+    --line: #383f45;
+    --chalk: #f0ede6;
+    --muted: #8b939a;
+    --accent: #e8622c;
+    --accent-dim: #7a3a22;
+    --teal: #4fb0a5;
+    --danger: #d6455a;
+    --danger-dim: #3a2226;
+    --radius: 10px;
+    font-size: 16px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    background: var(--bg);
+    color: var(--chalk);
+    font-family: 'Work Sans', -apple-system, sans-serif;
+    padding-top: env(safe-area-inset-top,0px);
+    padding-bottom: env(safe-area-inset-bottom,0px);
+    -webkit-font-smoothing: antialiased;
+    min-height:100%;
+  }
+  h1,h2,h3,.display{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.01em; }
+
+  /* ---- Topo line decoration ---- */
+  .topo{
+    position:relative; overflow:hidden;
+    background:
+      radial-gradient(circle at 15% 30%, transparent 0 38%, var(--line) 38% 39%, transparent 39% 100%),
+      radial-gradient(circle at 15% 30%, transparent 0 58%, var(--line) 58% 59%, transparent 59% 100%),
+      radial-gradient(circle at 15% 30%, transparent 0 78%, var(--line) 78% 79%, transparent 79% 100%);
+    background-color: var(--bg-alt);
+  }
+
+  /* ---- App shell ---- */
+  .app{ max-width:520px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; }
+
+  header.top{
+    padding:22px 20px 18px;
+    border-bottom:1px solid var(--line);
+  }
+  header.top .wordmark{ display:flex; align-items:baseline; gap:8px; }
+  header.top .wordmark .dot{ color:var(--accent); }
+  header.top h1{ font-size:1.35rem; font-weight:700; }
+  header.top p{ color:var(--muted); font-size:0.85rem; margin-top:4px; }
+
+  main{ flex:1; padding:18px 16px 100px; }
+  .view{ display:none; animation:fade .18s ease; }
+  .view.active{ display:block; }
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  /* ---- Cards ---- */
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .card h3{ font-size:0.95rem; font-weight:600; margin-bottom:10px; }
+  .card .label{ color:var(--muted); font-size:0.78rem; text-transform:uppercase; letter-spacing:.06em; }
+
+  /* ---- Dashboard hero ---- */
+  .goal-hero{
+    padding:22px 18px;
+    border-radius:var(--radius);
+    background: linear-gradient(160deg, var(--panel-alt), var(--panel));
+    border:1px solid var(--line);
+    margin-bottom:14px;
+    position:relative;
+  }
+  .goal-hero .grade-target{
+    font-size:3.4rem; font-weight:700; line-height:1;
+    color:var(--accent);
+  }
+  .goal-hero .grade-target sup{ font-size:1.1rem; color:var(--muted); font-weight:500; margin-left:4px; }
+  .goal-hero .sub{ color:var(--muted); font-size:0.85rem; margin-top:6px; }
+  .goal-hero .countdown{ margin-top:14px; display:flex; gap:18px; }
+  .goal-hero .countdown div{ }
+  .goal-hero .countdown .n{ font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:600; }
+  .goal-hero .countdown .l{ color:var(--muted); font-size:0.72rem; text-transform:uppercase; letter-spacing:.05em; }
+
+  .stat-row{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+  .stat{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:14px; }
+  .stat .n{ font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:600; }
+  .stat .l{ color:var(--muted); font-size:0.75rem; margin-top:2px; }
+
+  /* injury banner */
+  .flag-banner{
+    display:none;
+    background:var(--danger-dim);
+    border:1px solid var(--danger);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    margin-bottom:14px;
+  }
+  .flag-banner.active{ display:block; }
+  .flag-banner .t{ font-weight:600; font-size:0.9rem; color:#f3b9c2; }
+  .flag-banner .d{ font-size:0.82rem; color:#d99aa4; margin-top:4px; line-height:1.4; }
+
+  /* ---- Buttons / inputs ---- */
+  button{ font-family:inherit; cursor:pointer; }
+  .btn{
+    background:var(--accent); color:#fff; border:none;
+    padding:12px 16px; border-radius:8px; font-weight:600; font-size:0.9rem;
+    width:100%;
+  }
+  .btn:active{ transform:scale(0.98); }
+  .btn.secondary{ background:transparent; border:1px solid var(--line); color:var(--chalk); }
+  .btn.ghost{ background:transparent; border:none; color:var(--muted); font-size:0.8rem; width:auto; padding:6px 0; text-decoration:underline; }
+  .btn.danger-outline{ background:transparent; border:1px solid var(--danger); color:#f3b9c2; }
+
+  label{ display:block; font-size:0.78rem; color:var(--muted); margin:12px 0 6px; text-transform:uppercase; letter-spacing:.04em; }
+  label:first-of-type{ margin-top:0; }
+  input[type=text], input[type=date], input[type=number], select, textarea{
+    width:100%; background:var(--bg-alt); border:1px solid var(--line); color:var(--chalk);
+    padding:11px 12px; border-radius:8px; font-family:inherit; font-size:0.92rem;
+  }
+  textarea{ resize:vertical; min-height:64px; }
+  .seg{ display:flex; gap:6px; flex-wrap:wrap; }
+  .seg button{
+    flex:1; min-width:70px; background:var(--bg-alt); border:1px solid var(--line); color:var(--muted);
+    padding:9px 8px; border-radius:8px; font-size:0.82rem; font-weight:500;
+  }
+  .seg button.sel{ background:var(--accent-dim); border-color:var(--accent); color:var(--chalk); }
+  .toggle-row{ display:flex; align-items:center; justify-content:space-between; padding:10px 0; }
+  .toggle-row .t{ font-size:0.88rem; }
+  .switch{ width:42px; height:24px; background:var(--bg-alt); border:1px solid var(--line); border-radius:99px; position:relative; }
+  .switch.on{ background:var(--accent-dim); border-color:var(--accent); }
+  .switch .knob{ width:18px; height:18px; background:var(--muted); border-radius:50%; position:absolute; top:2px; left:2px; transition:left .15s; }
+  .switch.on .knob{ left:20px; background:var(--accent); }
+  .switch.danger.on{ background:var(--danger-dim); border-color:var(--danger); }
+  .switch.danger.on .knob{ background:var(--danger); }
+
+  /* checklist */
+  .check-item{ display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--line); }
+  .check-item:last-child{ border-bottom:none; }
+  .check-item .box{ width:22px; height:22px; border:1.5px solid var(--muted); border-radius:5px; flex-shrink:0; position:relative; }
+  .check-item.done .box{ background:var(--teal); border-color:var(--teal); }
+  .check-item.done .box::after{ content:''; position:absolute; left:6px; top:2px; width:5px; height:10px; border:solid var(--bg); border-width:0 2px 2px 0; transform:rotate(40deg); }
+  .check-item .txt .name{ font-size:0.9rem; font-weight:500; }
+  .check-item.done .txt .name{ color:var(--muted); text-decoration:line-through; }
+  .check-item .txt .meta{ font-size:0.76rem; color:var(--muted); margin-top:2px; }
+
+  /* pyramid */
+  .pyramid{ display:flex; flex-direction:column-reverse; gap:4px; }
+  .pyramid .row{ display:flex; align-items:center; gap:10px; }
+  .pyramid .g{ font-family:'Space Grotesk',sans-serif; font-size:0.78rem; color:var(--muted); width:26px; text-align:right; flex-shrink:0; }
+  .pyramid .bar-wrap{ flex:1; background:var(--bg-alt); border-radius:5px; overflow:hidden; height:20px; }
+  .pyramid .bar{ height:100%; background:var(--teal); border-radius:5px; display:flex; align-items:center; }
+  .pyramid .bar.top{ background:var(--accent); }
+  .pyramid .bar .cnt{ font-size:0.72rem; color:var(--bg); font-weight:600; padding-left:8px; }
+
+  /* session history */
+  .session-item{ padding:12px 0; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:10px; }
+  .session-item:last-child{ border-bottom:none; }
+  .session-item .g{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.1rem; color:var(--accent); min-width:38px; }
+  .session-item .g.sent{ color:var(--teal); }
+  .session-item .mid{ flex:1; }
+  .session-item .mid .t{ font-size:0.88rem; font-weight:500; }
+  .session-item .mid .m{ font-size:0.76rem; color:var(--muted); margin-top:2px; }
+  .session-item .del{ background:none; border:none; color:var(--muted); font-size:0.75rem; align-self:flex-start; }
+
+  .empty{ text-align:center; color:var(--muted); font-size:0.85rem; padding:26px 10px; }
+
+  /* nav */
+  nav.tabs{
+    position:fixed; bottom:0; left:0; right:0;
+    background:var(--bg-alt); border-top:1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom,0px);
+    z-index:10;
+  }
+  nav.tabs .row{ max-width:520px; margin:0 auto; display:flex; }
+  nav.tabs button{
+    flex:1; background:none; border:none; padding:10px 2px 9px; text-align:center;
+    color:var(--muted); font-size:0.62rem; display:flex; flex-direction:column; align-items:center; gap:3px;
+  }
+  nav.tabs button svg{ width:18px; height:18px; }
+  nav.tabs button.active{ color:var(--accent); }
+  nav.tabs button.active svg{ stroke:var(--accent); }
+
+  .fine-print{ color:var(--muted); font-size:0.76rem; line-height:1.5; }
+  .divider{ height:1px; background:var(--line); margin:14px 0; }
+
+  /* ---- photos ---- */
+  .photo-input-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--bg-alt); border:1px dashed var(--line); color:var(--muted);
+    padding:14px; border-radius:8px; font-size:0.85rem; font-weight:500; cursor:pointer;
+  }
+  .photo-input-btn svg{ width:18px; height:18px; }
+  #f-photo-input{ display:none; }
+  .photo-preview-grid{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .photo-chip{ position:relative; width:64px; height:64px; border-radius:7px; overflow:hidden; border:1px solid var(--line); }
+  .photo-chip img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .photo-chip .x{
+    position:absolute; top:2px; right:2px; width:18px; height:18px; border-radius:50%;
+    background:rgba(20,20,20,.75); color:#fff; border:none; font-size:11px; line-height:18px; padding:0;
+  }
+  .thumb-strip{ display:flex; gap:6px; margin-top:8px; }
+  .thumb-strip img{ width:40px; height:40px; object-fit:cover; border-radius:6px; border:1px solid var(--line); }
+
+  .lightbox{
+    display:none; position:fixed; inset:0; background:rgba(10,10,10,.92); z-index:100;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .lightbox.active{ display:flex; }
+  .lightbox img{ max-width:100%; max-height:90vh; border-radius:8px; }
+  .lightbox .close{
+    position:absolute; top:calc(16px + env(safe-area-inset-top,0px)); right:16px;
+    background:var(--panel); border:1px solid var(--line); color:var(--chalk);
+    width:34px; height:34px; border-radius:50%; font-size:16px;
+  }
+
+  /* ---- timer ---- */
+  .timer-btn{
+    width:30px; height:30px; border-radius:50%; background:var(--bg-alt); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--muted);
+  }
+  .timer-btn svg{ width:15px; height:15px; }
+  .check-item{ justify-content:space-between; }
+  .check-item .txt{ flex:1; }
+
+  .timer-bar{
+    display:none; position:sticky; top:0; z-index:8;
+    background:var(--panel-alt); border-bottom:1px solid var(--accent);
+    padding:12px 16px; align-items:center; gap:12px;
+  }
+  .timer-bar.active{ display:flex; }
+  .timer-bar .tt{ flex:1; }
+  .timer-bar .tt .name{ font-size:0.8rem; color:var(--muted); }
+  .timer-bar .tt .clock{ font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:600; }
+  .timer-bar button{
+    background:var(--accent); border:none; color:#fff; width:38px; height:38px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .timer-bar button.stop{ background:transparent; border:1px solid var(--line); color:var(--muted); }
+  .timer-bar svg{ width:16px; height:16px; }
+
+  .diagram-panel{
+    display:none; position:sticky; top:64px; z-index:7;
+    background:var(--panel); border-bottom:1px solid var(--line);
+    padding:14px 16px 16px; text-align:center;
+  }
+  .diagram-panel.active{ display:block; }
+  .diagram-panel svg{ width:100px; height:100px; stroke:var(--chalk); }
+  .diagram-panel .cue{ font-size:0.78rem; color:var(--muted); margin-top:6px; max-width:280px; margin-left:auto; margin-right:auto; line-height:1.4; }
+
+  /* ---- journal ---- */
+  .journal-item{ padding:12px 0; border-bottom:1px solid var(--line); }
+  .journal-item:last-child{ border-bottom:none; }
+  .journal-item .head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:5px; }
+  .journal-item .date{ font-size:0.78rem; color:var(--muted); }
+  .mood-pill{ font-size:0.68rem; font-weight:600; padding:2px 9px; border-radius:99px; }
+  .mood-pill.Great{ background:rgba(79,176,165,.18); color:var(--teal); }
+  .mood-pill.Good{ background:rgba(232,98,44,.15); color:var(--accent); }
+  .mood-pill.Rough{ background:rgba(139,147,154,.18); color:var(--muted); }
+  .mood-pill.Injured{ background:var(--danger-dim); color:#f3b9c2; }
+  .journal-item .txt{ font-size:0.88rem; line-height:1.45; }
+  .journal-item .del{ background:none; border:none; color:var(--muted); font-size:0.75rem; margin-top:6px; }
+
+  /* ---- weekly recap ---- */
+  .recap-line{ font-size:0.9rem; line-height:1.5; margin-bottom:12px; }
+  .recap-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .recap-grid .item .n{ font-family:'Space Grotesk',sans-serif; font-size:1.3rem; font-weight:600; }
+  .recap-grid .item .l{ color:var(--muted); font-size:0.72rem; margin-top:2px; }
+  .recap-grid .item .delta{ font-size:0.72rem; margin-top:3px; }
+  .recap-grid .item .delta.up{ color:var(--teal); }
+  .recap-grid .item .delta.down{ color:var(--danger); }
+  .recap-grid .item .delta.flat{ color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top topo">
+    <div class="wordmark"><h1>ClimbOS<span class="dot">.</span></h1></div>
+    <p>Personal training log — Project: V8</p>
+  </header>
+
+  <div class="timer-bar" id="timerBar">
+    <div class="tt">
+      <div class="name" id="timerLabel">Warmup step</div>
+      <div class="clock" id="timerClock">00:00</div>
+    </div>
+    <button id="timerToggle" onclick="toggleTimerRun()">
+      <svg viewBox="0 0 24 24" fill="currentColor" id="timerIcon"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <button class="stop" onclick="stopTimer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+
+  <div class="diagram-panel" id="diagramPanel">
+    <div id="diagramSvgWrap"></div>
+    <div class="cue" id="diagramCue"></div>
+  </div>
+
+  <main>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section class="view active" id="view-dashboard">
+
+      <div class="flag-banner" id="flagBanner">
+        <div class="t">Finger status requires assessment</div>
+        <div class="d">Hard finger loading isn't recommended while your flagged issue remains unresolved. Clear the flag on the Injury card once it's checked out.</div>
+      </div>
+
+      <div class="goal-hero">
+        <div class="label">Goal — by Dec 31, 2026</div>
+        <div class="grade-target">V8<sup>project</sup></div>
+        <div class="sub" id="goalSub">Log sessions to start tracking progress toward V8.</div>
+        <div class="countdown">
+          <div><div class="n" id="daysLeft">—</div><div class="l">Days left</div></div>
+          <div><div class="n" id="sessionsLogged">0</div><div class="l">Sessions logged</div></div>
+          <div><div class="n" id="highestGrade">—</div><div class="l">Highest send</div></div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat"><div class="n" id="statSends">0</div><div class="l">Total sends</div></div>
+        <div class="stat"><div class="n" id="statStreak">0</div><div class="l">This week</div></div>
+      </div>
+
+      <div class="card">
+        <h3>Weekly recap</h3>
+        <div class="recap-line" id="recapLine">Log a few sessions to see your weekly trend.</div>
+        <div class="recap-grid">
+          <div class="item"><div class="n" id="recapSessions">0</div><div class="l">Sessions</div><div class="delta" id="recapSessionsDelta"></div></div>
+          <div class="item"><div class="n" id="recapSends">0</div><div class="l">Sends</div><div class="delta" id="recapSendsDelta"></div></div>
+          <div class="item"><div class="n" id="recapHardest">—</div><div class="l">Hardest</div><div class="delta" id="recapHardestDelta"></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Recent sessions</h3>
+        <div id="recentList"><div class="empty">No sessions yet — log your first one.</div></div>
+      </div>
+
+      <button class="btn" onclick="goTo('log')">+ Log today's session</button>
+    </section>
+
+    <!-- ============ WARMUP ============ -->
+    <section class="view" id="view-warmup">
+      <h2 style="margin-bottom:4px;">Warmup</h2>
+      <p class="fine-print" style="margin-bottom:14px;">Preset routine — check items off as you go. Resets each time you open this tab on a new day.</p>
+      <div class="card">
+        <h3>General mobility</h3>
+        <div id="warm-general"></div>
+      </div>
+      <div class="card">
+        <h3>Fingers & forearms</h3>
+        <div id="warm-fingers"></div>
+      </div>
+      <div class="card">
+        <h3>Climbing ramp-up</h3>
+        <div id="warm-ramp"></div>
+      </div>
+      <button class="btn secondary" onclick="resetChecklist('warm')">Reset warmup</button>
+    </section>
+
+    <!-- ============ LOG SESSION ============ -->
+    <section class="view" id="view-log">
+      <h2 style="margin-bottom:14px;">Log session</h2>
+      <div class="card">
+        <label>Date</label>
+        <input type="date" id="f-date">
+
+        <label>Session focus</label>
+        <div class="seg" id="f-focus">
+          <button data-v="Power" class="sel">Power</button>
+          <button data-v="Technique">Technique</button>
+          <button data-v="Endurance">Endurance</button>
+          <button data-v="Project">Project</button>
+        </div>
+
+        <label>Grade attempted</label>
+        <select id="f-grade">
+          <option>V0</option><option>V1</option><option>V2</option><option>V3</option>
+          <option>V4</option><option>V5</option><option>V6</option><option selected>V7</option>
+          <option>V8</option><option>V9</option><option>V10</option>
+        </select>
+
+        <label>Attempts</label>
+        <input type="number" id="f-attempts" min="1" value="1">
+
+        <div class="toggle-row">
+          <div class="t">Sent it</div>
+          <div class="switch" id="f-sent" onclick="toggleSwitch(this)"><div class="knob"></div></div>
+        </div>
+
+        <label>Style / notes</label>
+        <textarea id="f-notes" placeholder="Crimpy overhang, felt strong on the crux..."></textarea>
+
+        <label>Photos</label>
+        <label class="photo-input-btn" for="f-photo-input">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M9 6l1-2h4l1 2"/></svg>
+          Add climb photos
+        </label>
+        <input type="file" id="f-photo-input" accept="image/*" capture="environment" multiple onchange="handlePhotoInput(event)">
+        <div class="photo-preview-grid" id="photoPreviewGrid"></div>
+
+        <div class="divider"></div>
+
+        <div class="toggle-row">
+          <div class="t">Flag pain or swelling</div>
+          <div class="switch danger" id="f-injury" onclick="toggleSwitch(this,true)"><div class="knob"></div></div>
+        </div>
+        <p class="fine-print">This isn't a diagnosis — it just pauses hard-loading suggestions on your dashboard until you clear it. See a professional for anything that doesn't settle quickly.</p>
+
+        <div class="divider"></div>
+        <button class="btn" onclick="saveSession()">Save session</button>
+      </div>
+    </section>
+
+    <!-- ============ COOLDOWN ============ -->
+    <section class="view" id="view-cooldown">
+      <h2 style="margin-bottom:4px;">Cooldown</h2>
+      <p class="fine-print" style="margin-bottom:14px;">Preset routine — check items off as you go.</p>
+      <div class="card">
+        <h3>Stretch & release</h3>
+        <div id="cool-stretch"></div>
+      </div>
+      <div class="card">
+        <h3>Recovery</h3>
+        <div id="cool-recovery"></div>
+      </div>
+      <button class="btn secondary" onclick="resetChecklist('cool')">Reset cooldown</button>
+    </section>
+
+    <!-- ============ PROGRESS ============ -->
+    <section class="view" id="view-progress">
+      <h2 style="margin-bottom:14px;">Progress</h2>
+
+      <div class="card">
+        <h3>Send pyramid</h3>
+        <div class="pyramid" id="pyramid"></div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h3 style="margin:0;">Injury status</h3>
+        </div>
+        <div class="toggle-row">
+          <div class="t">Currently flagged</div>
+          <div class="switch danger" id="clearFlagSwitch" onclick="toggleClearFlag(this)"><div class="knob"></div></div>
+        </div>
+        <p class="fine-print">Toggle off once cleared. While flagged, hard finger-loading focus won't be suggested.</p>
+      </div>
+
+      <div class="card">
+        <h3>All sessions</h3>
+        <div id="fullList"><div class="empty">Nothing logged yet.</div></div>
+      </div>
+    </section>
+
+    <!-- ============ JOURNAL ============ -->
+    <section class="view" id="view-journal">
+      <h2 style="margin-bottom:14px;">Journal</h2>
+
+      <div class="card">
+        <label>How's it feeling today</label>
+        <div class="seg" id="j-mood">
+          <button data-v="Great">Great</button>
+          <button data-v="Good" class="sel">Good</button>
+          <button data-v="Rough">Rough</button>
+          <button data-v="Injured">Injured</button>
+        </div>
+        <label>Entry</label>
+        <textarea id="j-text" placeholder="Fingers felt tight in the first hour, loosened up by the third problem. Mental block on overhangs today..."></textarea>
+        <div class="divider"></div>
+        <button class="btn" onclick="saveJournalEntry()">Save entry</button>
+      </div>
+
+      <div class="card">
+        <h3>Past entries</h3>
+        <div id="journalList"><div class="empty">Nothing written yet.</div></div>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="tabs">
+    <div class="row">
+      <button class="tab-btn active" data-view="dashboard" onclick="goTo('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+        Dashboard
+      </button>
+      <button class="tab-btn" data-view="warmup" onclick="goTo('warmup')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Warmup
+      </button>
+      <button class="tab-btn" data-view="log" onclick="goTo('log')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>
+        Log
+      </button>
+      <button class="tab-btn" data-view="cooldown" onclick="goTo('cooldown')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v6a6 6 0 0012 0V3M4 21h16"/></svg>
+        Cooldown
+      </button>
+      <button class="tab-btn" data-view="progress" onclick="goTo('progress')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9M11 19V5M18 19v-7"/></svg>
+        Progress
+      </button>
+      <button class="tab-btn" data-view="journal" onclick="goTo('journal')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4h11a2 2 0 012 2v13l-3-2-3 2-3-2-3 2V6a2 2 0 012-2z"/><path d="M9 9h6M9 13h6"/></svg>
+        Journal
+      </button>
+    </div>
+  </nav>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="close" onclick="closeLightbox(event)">&times;</button>
+  <img id="lightboxImg" src="" alt="Climb photo">
+</div>
+
+<script>
+/* ---------------- storage helpers ---------------- */
+const KEY_SESSIONS = 'climbos_sessions';
+const KEY_INJURY = 'climbos_injury_flag';
+const KEY_WARM = 'climbos_warm_check';
+const KEY_COOL = 'climbos_cool_check';
+const KEY_WARM_DATE = 'climbos_warm_date';
+const KEY_COOL_DATE = 'climbos_cool_date';
+const KEY_JOURNAL = 'climbos_journal';
+
+function load(key, fallback){
+  try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+  catch(e){ return fallback; }
+}
+function save(key, val){
+  try{ localStorage.setItem(key, JSON.stringify(val)); }
+  catch(e){ console.error('Storage error', e); }
+}
+
+/* ---------------- preset checklists ---------------- */
+const WARM_ITEMS = {
+  general: [
+    {id:'g1', name:'Arm circles & shoulder rolls', meta:'1 min', sec:60},
+    {id:'g2', name:'Cat-cow / spine mobility', meta:'1 min', sec:60},
+    {id:'g3', name:'Light cardio (jump rope / row)', meta:'3–5 min', sec:240},
+  ],
+  fingers: [
+    {id:'f1', name:'Wrist circles & flicks', meta:'1 min', sec:60},
+    {id:'f2', name:'Finger extensions with band', meta:'2×15'},
+    {id:'f3', name:'Light dead hang, open hand', meta:'2×10s'},
+  ],
+  ramp: [
+    {id:'r1', name:'Easy traverse, big holds', meta:'5 min', sec:300},
+    {id:'r2', name:'Climb 3 grades below your max', meta:'3 problems'},
+    {id:'r3', name:'Climb 1–2 grades below your max', meta:'2–3 problems'},
+  ]
+};
+const COOL_ITEMS = {
+  stretch: [
+    {id:'c1', name:'Forearm flexor/extensor stretch', meta:'30s each', sec:30},
+    {id:'c2', name:'Shoulder & lat stretch', meta:'30s each', sec:30},
+    {id:'c3', name:'Hip flexor stretch', meta:'30s each', sec:30},
+  ],
+  recovery: [
+    {id:'c4', name:'Light finger massage / uncurl', meta:'1 min', sec:60},
+    {id:'c5', name:'Hydrate & note how fingers feel', meta:''},
+  ]
+};
+
+function renderChecklist(containerId, items, storeKey){
+  const state = load(storeKey, {});
+  const el = document.getElementById(containerId);
+  el.innerHTML = items.map(it => `
+    <div class="check-item ${state[it.id] ? 'done':''}">
+      <div class="box" onclick="toggleCheck('${storeKey}','${it.id}')"></div>
+      <div class="txt" onclick="toggleCheck('${storeKey}','${it.id}')"><div class="name">${it.name}</div>${it.meta ? `<div class="meta">${it.meta}</div>`:''}</div>
+      ${it.sec ? `<button class="timer-btn" onclick="event.stopPropagation(); startTimer(${it.sec}, '${it.name.replace(/'/g,"\\'")}', '${storeKey}', '${it.id}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      </button>` : ''}
+    </div>`).join('');
+}
+function toggleCheck(storeKey, id){
+  const state = load(storeKey, {});
+  state[id] = !state[id];
+  save(storeKey, state);
+  renderAllChecklists();
+}
+function renderAllChecklists(){
+  renderChecklist('warm-general', WARM_ITEMS.general, KEY_WARM);
+  renderChecklist('warm-fingers', WARM_ITEMS.fingers, KEY_WARM);
+  renderChecklist('warm-ramp', WARM_ITEMS.ramp, KEY_WARM);
+  renderChecklist('cool-stretch', COOL_ITEMS.stretch, KEY_COOL);
+  renderChecklist('cool-recovery', COOL_ITEMS.recovery, KEY_COOL);
+}
+function resetChecklist(prefix){
+  const key = prefix === 'warm' ? KEY_WARM : KEY_COOL;
+  save(key, {});
+  renderAllChecklists();
+}
+// auto-reset checklists on a new day
+function autoResetDaily(){
+  const today = new Date().toDateString();
+  if(load(KEY_WARM_DATE, '') !== today){ save(KEY_WARM, {}); save(KEY_WARM_DATE, today); }
+  if(load(KEY_COOL_DATE, '') !== today){ save(KEY_COOL, {}); save(KEY_COOL_DATE, today); }
+}
+
+/* ---------------- nav ---------------- */
+function goTo(view){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+  if(view === 'dashboard') renderDashboard();
+  if(view === 'progress') renderProgress();
+  if(view === 'journal') renderJournal();
+}
+
+/* ---------------- log form ---------------- */
+document.getElementById('f-date').valueAsDate = new Date();
+document.querySelectorAll('#f-focus button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('#f-focus button').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+  });
+});
+document.querySelectorAll('#j-mood button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('#j-mood button').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+  });
+});
+function toggleSwitch(el, isInjury){
+  el.classList.toggle('on');
+}
+function gradeNum(g){ return parseInt(g.replace('V',''),10); }
+
+function saveSession(){
+  const sessions = load(KEY_SESSIONS, []);
+  const focusBtn = document.querySelector('#f-focus button.sel');
+  const entry = {
+    id: Date.now(),
+    date: document.getElementById('f-date').value || new Date().toISOString().slice(0,10),
+    focus: focusBtn ? focusBtn.dataset.v : 'Power',
+    grade: document.getElementById('f-grade').value,
+    attempts: parseInt(document.getElementById('f-attempts').value,10) || 1,
+    sent: document.getElementById('f-sent').classList.contains('on'),
+    notes: document.getElementById('f-notes').value.trim(),
+  };
+  sessions.unshift(entry);
+  save(KEY_SESSIONS, sessions);
+  savePhotos(entry.id, pendingPhotos);
+
+  if(document.getElementById('f-injury').classList.contains('on')){
+    save(KEY_INJURY, true);
+  }
+
+  // reset form
+  document.getElementById('f-attempts').value = 1;
+  document.getElementById('f-notes').value = '';
+  document.getElementById('f-sent').classList.remove('on');
+  document.getElementById('f-injury').classList.remove('on');
+  pendingPhotos = [];
+  renderPendingPhotos();
+
+  applyInjuryFlagUI();
+  goTo('dashboard');
+}
+
+async function deleteSession(id){
+  let sessions = load(KEY_SESSIONS, []);
+  sessions = sessions.filter(s => s.id !== id);
+  save(KEY_SESSIONS, sessions);
+  await deletePhotosFor(id);
+  renderDashboard();
+  renderProgress();
+}
+
+/* ---------------- injury flag ---------------- */
+function applyInjuryFlagUI(){
+  const flagged = load(KEY_INJURY, false);
+  document.getElementById('flagBanner').classList.toggle('active', flagged);
+  document.getElementById('clearFlagSwitch').classList.toggle('on', flagged);
+}
+function toggleClearFlag(el){
+  const flagged = !load(KEY_INJURY, false);
+  save(KEY_INJURY, flagged);
+  applyInjuryFlagUI();
+}
+
+/* ---------------- dashboard rendering ---------------- */
+async function renderDashboard(){
+  const sessions = load(KEY_SESSIONS, []);
+  const photoMap = await getAllPhotosMap();
+  renderWeeklyRecap(sessions);
+  document.getElementById('sessionsLogged').textContent = sessions.length;
+
+  const sends = sessions.filter(s => s.sent);
+  document.getElementById('statSends').textContent = sends.length;
+
+  const highest = sends.reduce((max,s)=> gradeNum(s.grade) > gradeNum(max) ? s.grade : max, 'V0');
+  document.getElementById('highestGrade').textContent = sends.length ? highest : '—';
+
+  const now = new Date();
+  const weekAgo = new Date(now); weekAgo.setDate(now.getDate()-7);
+  const thisWeek = sessions.filter(s => new Date(s.date) >= weekAgo).length;
+  document.getElementById('statStreak').textContent = thisWeek;
+
+  const target = new Date('2026-12-31T23:59:59');
+  const days = Math.max(0, Math.ceil((target - now) / 86400000));
+  document.getElementById('daysLeft').textContent = days;
+
+  const goalSub = document.getElementById('goalSub');
+  if(sends.length === 0){
+    goalSub.textContent = 'Log sessions to start tracking progress toward V8.';
+  } else if(gradeNum(highest) >= 8){
+    goalSub.textContent = 'Goal hit — V8 sent. Time to set the next project.';
+  } else {
+    const gap = 8 - gradeNum(highest);
+    goalSub.textContent = `Highest send so far: ${highest}. ${gap} grade${gap===1?'':'s'} to go.`;
+  }
+
+  const recent = sessions.slice(0,4);
+  document.getElementById('recentList').innerHTML = recent.length ? recent.map(s=>sessionRowHtml(s, photoMap[s.id])).join('') :
+    '<div class="empty">No sessions yet — log your first one.</div>';
+
+  applyInjuryFlagUI();
+}
+
+function sessionRowHtml(s, photos){
+  photos = photos || [];
+  const thumbs = photos.length ? `<div class="thumb-strip">${photos.map(p=>`<img src="${p}" onclick="openLightbox('${p}')">`).join('')}</div>` : '';
+  return `<div class="session-item">
+    <div class="g ${s.sent?'sent':''}">${s.grade}</div>
+    <div class="mid">
+      <div class="t">${s.focus}${s.sent ? ' · sent':''}</div>
+      <div class="m">${s.date} · ${s.attempts} attempt${s.attempts===1?'':'s'}${s.notes ? ' · '+escapeHtml(s.notes) : ''}</div>
+      ${thumbs}
+    </div>
+    <button class="del" onclick="deleteSession(${s.id})">Remove</button>
+  </div>`;
+}
+function escapeHtml(str){
+  const d = document.createElement('div'); d.textContent = str; return d.innerHTML;
+}
+
+/* ---------------- progress rendering ---------------- */
+async function renderProgress(){
+  const sessions = load(KEY_SESSIONS, []);
+  const photoMap = await getAllPhotosMap();
+  const sends = sessions.filter(s => s.sent);
+
+  const counts = {};
+  for(let i=0;i<=10;i++) counts['V'+i] = 0;
+  sends.forEach(s => { counts[s.grade] = (counts[s.grade]||0) + 1; });
+
+  const maxCount = Math.max(1, ...Object.values(counts));
+  const grades = Object.keys(counts).filter(g => gradeNum(g) <= 10);
+  document.getElementById('pyramid').innerHTML = grades.map(g => {
+    const c = counts[g];
+    const pct = c ? Math.max(14, (c/maxCount)*100) : 0;
+    return `<div class="row">
+      <div class="g">${g}</div>
+      <div class="bar-wrap">${c ? `<div class="bar ${g==='V8'?'top':''}" style="width:${pct}%"><span class="cnt">${c}</span></div>` : ''}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('fullList').innerHTML = sessions.length ?
+    sessions.map(s=>sessionRowHtml(s, photoMap[s.id])).join('') :
+    '<div class="empty">Nothing logged yet.</div>';
+}
+
+/* ---------------- timer ---------------- */
+let timerState = null; // {remaining, total, running, label, storeKey, itemId, intervalId}
+
+function fmtTime(s){
+  const m = Math.floor(s/60), r = s%60;
+  return `${String(m).padStart(2,'0')}:${String(r).padStart(2,'0')}`;
+}
+function startTimer(seconds, label, storeKey, itemId){
+  if(timerState && timerState.intervalId) clearInterval(timerState.intervalId);
+  timerState = { remaining: seconds, total: seconds, running: true, label, storeKey, itemId, intervalId: null };
+  document.getElementById('timerBar').classList.add('active');
+  document.getElementById('timerLabel').textContent = label;
+  showDiagram(itemId);
+  updateTimerUI();
+  runTimerInterval();
+}
+function runTimerInterval(){
+  timerState.intervalId = setInterval(()=>{
+    if(!timerState.running) return;
+    timerState.remaining--;
+    if(timerState.remaining <= 0){
+      timerState.remaining = 0;
+      updateTimerUI();
+      timerDone();
+      return;
+    }
+    updateTimerUI();
+  }, 1000);
+}
+function updateTimerUI(){
+  if(!timerState) return;
+  document.getElementById('timerClock').textContent = fmtTime(timerState.remaining);
+  document.getElementById('timerLabel').textContent = timerState.label;
+  document.getElementById('timerIcon').innerHTML = timerState.running
+    ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>'
+    : '<path d="M8 5v14l11-7z"/>';
+}
+function toggleTimerRun(){
+  if(!timerState) return;
+  timerState.running = !timerState.running;
+  updateTimerUI();
+}
+function stopTimer(){
+  if(timerState && timerState.intervalId) clearInterval(timerState.intervalId);
+  timerState = null;
+  document.getElementById('timerBar').classList.remove('active');
+  hideDiagram();
+}
+function timerDone(){
+  clearInterval(timerState.intervalId);
+  document.getElementById('timerLabel').textContent = timerState.label + ' — done';
+  // mark checklist item complete
+  const state = load(timerState.storeKey, {});
+  state[timerState.itemId] = true;
+  save(timerState.storeKey, state);
+  renderAllChecklists();
+  beep();
+  if(navigator.vibrate) navigator.vibrate([200,100,200]);
+  setTimeout(()=>{ if(timerState && timerState.remaining===0) stopTimer(); }, 4000);
+}
+function beep(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = 880; g.gain.value = 0.15;
+    o.start(); o.stop(ctx.currentTime + 0.4);
+  }catch(e){ /* audio unavailable */ }
+}
+
+/* ---------------- photo storage (IndexedDB) ---------------- */
+let pendingPhotos = [];
+let dbPromise = null;
+function getDB(){
+  if(dbPromise) return dbPromise;
+  dbPromise = new Promise((resolve, reject)=>{
+    const req = indexedDB.open('climbos_db', 1);
+    req.onupgradeneeded = ()=> req.result.createObjectStore('photos');
+    req.onsuccess = ()=> resolve(req.result);
+    req.onerror = ()=> reject(req.error);
+  });
+  return dbPromise;
+}
+async function savePhotos(sessionId, dataUrls){
+  if(!dataUrls.length) return;
+  const db = await getDB();
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction('photos','readwrite');
+    tx.objectStore('photos').put(dataUrls, sessionId);
+    tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error);
+  });
+}
+async function deletePhotosFor(sessionId){
+  const db = await getDB();
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction('photos','readwrite');
+    tx.objectStore('photos').delete(sessionId);
+    tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error);
+  });
+}
+async function getAllPhotosMap(){
+  const db = await getDB();
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction('photos','readonly');
+    const store = tx.objectStore('photos');
+    const map = {};
+    const req = store.openCursor();
+    req.onsuccess = (e)=>{
+      const cursor = e.target.result;
+      if(cursor){ map[cursor.key] = cursor.value; cursor.continue(); }
+      else resolve(map);
+    };
+    req.onerror = ()=>reject(req.error);
+  });
+}
+function resizeImage(file){
+  return new Promise((resolve)=>{
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; };
+    img.onload = () => {
+      const maxDim = 900;
+      let {width, height} = img;
+      if(width > maxDim || height > maxDim){
+        const scale = maxDim / Math.max(width, height);
+        width = Math.round(width*scale); height = Math.round(height*scale);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL('image/jpeg', 0.72));
+    };
+    reader.readAsDataURL(file);
+  });
+}
+async function handlePhotoInput(evt){
+  const files = Array.from(evt.target.files || []);
+  for(const file of files){
+    const dataUrl = await resizeImage(file);
+    pendingPhotos.push(dataUrl);
+  }
+  evt.target.value = '';
+  renderPendingPhotos();
+}
+function removePendingPhoto(idx){
+  pendingPhotos.splice(idx,1);
+  renderPendingPhotos();
+}
+function renderPendingPhotos(){
+  document.getElementById('photoPreviewGrid').innerHTML = pendingPhotos.map((src,i)=>`
+    <div class="photo-chip"><img src="${src}"><button class="x" onclick="removePendingPhoto(${i})">&times;</button></div>
+  `).join('');
+}
+function openLightbox(src){
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('active');
+}
+function closeLightbox(e){
+  if(e) e.stopPropagation();
+  document.getElementById('lightbox').classList.remove('active');
+}
+
+/* ---------------- stretch diagrams ---------------- */
+const DIAGRAMS = {
+  g1: { cue:'Arms out to the sides, small circles forward then backward.',
+    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="60" cy="20" r="10"/><line x1="60" y1="30" x2="60" y2="72"/><line x1="60" y1="72" x2="42" y2="108"/><line x1="60" y1="72" x2="78" y2="108"/><line x1="60" y1="40" x2="22" y2="34"/><line x1="60" y1="40" x2="98" y2="34"/><path d="M14 34a8 8 0 1 1 16 0" stroke="var(--accent)"/><path d="M90 34a8 8 0 1 1 16 0" stroke="var(--accent)"/></svg>` },
+  g2: { cue:'On hands and knees. Arch your back up (cat), then dip it down (cow).',
+    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="94" cy="40" r="9"/><path d="M85 46Q55 30 28 50" /><line x1="28" y1="50" x2="18" y2="90"/><line x1="28" y1="50" x2="34" y2="92"/><line x1="82" y1="52" x2="92" y2="92"/><line x1="82" y1="52" x2="98" y2="92"/></svg>` },
+  g3: { cue:'Light jog in place or jump rope to get your heart rate up.',
+    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="62" cy="18" r="10"/><line x1="62" y1="28" x2="58" y2="64"/><line x1="58" y1="64" x2="40" y2="70"/><line x1="58" y1="64" x2="80" y2="100"/><line x1="60" y1="40" x2="34" y2="30"/><line x1="60" y1="40" x2="86" y2="52"/><path d="M20 100 Q60 130 100 60" stroke="var(--accent)"/></svg>` },
+  f1: { cue:'Circle your wrists both directions, then flick your fingers loose.',
+    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><line x1="20" y1="90" x2="58" y2="66"/><circle cx="70" cy="58" r="12"/><path d="M70 40a18 18 0 1 1-12 8" stroke="var(--accent)"/></svg>` },
+  r1: { cue:"Traverse sideways on big, easy holds — stay loose, don't pull hard.",
+    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="20" cy="20" r="4" fill="var(--accent)" stroke="none"/><circle cx="55" cy="14" r="4" fill="var(--accent)" stroke="none"/><circle cx="90" cy="24" r="4" fill="var(--accent)" stroke="none"/><circle cx="38" cy="60" r="4" fill="var(--accent)" stroke="none"/><circle cx="78" cy="66" r="4" fill="var(--accent)" stroke="none"/><circle cx="60" cy="40" r="9"/><line x1="60" y1="49" x2="55" y2="14"/><line x1="60" y1="49" x2="78" y2="66"/><line x1="60" y1="49" x2="38" y2="60"/><line x1="60" y1="49" x2="70" y2="90"/></svg>` },
+  c1: { cue:'Extend your arm, pull fingers back gently with the other hand. Then reverse.',
+    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><line x1="15" y1="60" x2="65" y2="60"/><path d="M65 60l14-4M65 60l14 4M65 60l14-10M65 60l14 10" /><path d="M75 40 Q90 60 75 80" stroke="var(--accent)"/></svg>` },
+  c2: { cue:'Reach one arm overhead and lean gently to the opposite side.',
+    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="55" cy="20" r="10"/><path d="M55 30Q68 60 58 100"/><line x1="58" y1="100" x2="46" y2="112"/><line x1="58" y1="100" x2="70" y2="112"/><line x1="55" y1="40" x2="30" y2="55"/><line x1="58" y1="35" x2="95" y2="10"/></svg>` },
+  c3: { cue:'Kneeling lunge, back knee down. Gently push your hips forward.',
+    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="45" cy="22" r="10"/><line x1="45" y1="32" x2="52" y2="65"/><line x1="52" y1="65" x2="30" y2="100"/><line x1="52" y1="65" x2="85" y2="80"/><line x1="85" y1="80" x2="85" y2="105"/><line x1="30" y1="100" x2="15" y2="105"/><line x1="45" y1="45" x2="70" y2="35"/></svg>` },
+  c4: { cue:'Squeeze and uncurl each finger, gentle circles on the palm.',
+    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><path d="M40 90V50a6 6 0 0 1 12 0v20M52 68V42a6 6 0 0 1 12 0v26M64 68V46a6 6 0 0 1 12 0v22M76 70V56a6 6 0 0 1 10 0v20a20 20 0 0 1-20 20H50a18 18 0 0 1-14-14l-6-16a5 5 0 0 1 9-4l5 8"/></svg>` },
+};
+
+function showDiagram(itemId){
+  const d = DIAGRAMS[itemId];
+  const panel = document.getElementById('diagramPanel');
+  if(!d){ panel.classList.remove('active'); return; }
+  document.getElementById('diagramSvgWrap').innerHTML = d.svg;
+  document.getElementById('diagramCue').textContent = d.cue;
+  panel.classList.add('active');
+}
+function hideDiagram(){
+  document.getElementById('diagramPanel').classList.remove('active');
+}
+
+/* ---------------- journal ---------------- */
+function saveJournalEntry(){
+  const text = document.getElementById('j-text').value.trim();
+  if(!text) return;
+  const moodBtn = document.querySelector('#j-mood button.sel');
+  const entries = load(KEY_JOURNAL, []);
+  entries.unshift({
+    id: Date.now(),
+    date: new Date().toISOString().slice(0,10),
+    mood: moodBtn ? moodBtn.dataset.v : 'Good',
+    text
+  });
+  save(KEY_JOURNAL, entries);
+  document.getElementById('j-text').value = '';
+  renderJournal();
+}
+function deleteJournalEntry(id){
+  let entries = load(KEY_JOURNAL, []);
+  entries = entries.filter(e => e.id !== id);
+  save(KEY_JOURNAL, entries);
+  renderJournal();
+}
+function renderJournal(){
+  const entries = load(KEY_JOURNAL, []);
+  document.getElementById('journalList').innerHTML = entries.length ? entries.map(e => `
+    <div class="journal-item">
+      <div class="head">
+        <span class="date">${e.date}</span>
+        <span class="mood-pill ${e.mood}">${e.mood}</span>
+      </div>
+      <div class="txt">${escapeHtml(e.text)}</div>
+      <button class="del" onclick="deleteJournalEntry(${e.id})">Remove</button>
+    </div>`).join('') : '<div class="empty">Nothing written yet.</div>';
+}
+
+/* ---------------- weekly recap ---------------- */
+function renderWeeklyRecap(sessions){
+  const now = new Date();
+  const weekAgo = new Date(now); weekAgo.setDate(now.getDate()-7);
+  const twoWeeksAgo = new Date(now); twoWeeksAgo.setDate(now.getDate()-14);
+
+  const thisWk = sessions.filter(s => new Date(s.date) >= weekAgo);
+  const lastWk = sessions.filter(s => new Date(s.date) >= twoWeeksAgo && new Date(s.date) < weekAgo);
+
+  const sendsThis = thisWk.filter(s => s.sent);
+  const sendsLast = lastWk.filter(s => s.sent);
+  const hardestThis = sendsThis.reduce((m,s)=> gradeNum(s.grade)>gradeNum(m) ? s.grade : m, 'V0');
+  const hardestLast = sendsLast.reduce((m,s)=> gradeNum(s.grade)>gradeNum(m) ? s.grade : m, 'V0');
+
+  document.getElementById('recapSessions').textContent = thisWk.length;
+  document.getElementById('recapSends').textContent = sendsThis.length;
+  document.getElementById('recapHardest').textContent = sendsThis.length ? hardestThis : '—';
+
+  setDelta('recapSessionsDelta', thisWk.length - lastWk.length, '');
+  setDelta('recapSendsDelta', sendsThis.length - sendsLast.length, '');
+  if(sendsThis.length || sendsLast.length){
+    setDelta('recapHardestDelta', gradeNum(hardestThis) - gradeNum(hardestLast), '');
+  } else {
+    document.getElementById('recapHardestDelta').textContent = '';
+  }
+
+  const line = document.getElementById('recapLine');
+  if(sessions.length === 0){
+    line.textContent = 'Log a few sessions to see your weekly trend.';
+  } else if(thisWk.length === 0){
+    line.textContent = 'No sessions logged this week yet.';
+  } else {
+    let s = `${thisWk.length} session${thisWk.length===1?'':'s'} this week, ${sendsThis.length} send${sendsThis.length===1?'':'s'}`;
+    if(sendsThis.length) s += `, hardest ${hardestThis}`;
+    if(sendsLast.length && gradeNum(hardestThis) > gradeNum(hardestLast)) s += ` — up from ${hardestLast} last week.`;
+    else if(sendsLast.length && gradeNum(hardestThis) < gradeNum(hardestLast)) s += ` — down from ${hardestLast} last week.`;
+    else s += '.';
+    line.textContent = s;
+  }
+}
+function setDelta(id, diff, suffix){
+  const el = document.getElementById(id);
+  if(diff > 0){ el.textContent = `▲ ${diff}${suffix} vs last wk`; el.className = 'delta up'; }
+  else if(diff < 0){ el.textContent = `▼ ${Math.abs(diff)}${suffix} vs last wk`; el.className = 'delta down'; }
+  else { el.textContent = 'same as last wk'; el.className = 'delta flat'; }
+}
+
+/* ---------------- init ---------------- */
+autoResetDaily();
+renderAllChecklists();
+renderDashboard();
+applyInjuryFlagUI();
+</script>
+</body>
+</html>
