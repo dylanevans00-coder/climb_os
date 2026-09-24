@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ClimbOS — Training Log</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1c2024">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ClimbOS">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -258,7 +268,7 @@
     padding:14px 16px 16px; text-align:center;
   }
   .diagram-panel.active{ display:block; }
-  .diagram-panel svg{ width:100px; height:100px; stroke:var(--chalk); }
+  .diagram-panel svg{ width:130px; height:130px; }
   .diagram-panel .cue{ font-size:0.78rem; color:var(--muted); margin-top:6px; max-width:280px; margin-left:auto; margin-right:auto; line-height:1.4; }
 
   /* ---- journal ---- */
@@ -945,23 +955,23 @@ function closeLightbox(e){
 /* ---------------- stretch diagrams ---------------- */
 const DIAGRAMS = {
   g1: { cue:'Arms out to the sides, small circles forward then backward.',
-    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="60" cy="20" r="10"/><line x1="60" y1="30" x2="60" y2="72"/><line x1="60" y1="72" x2="42" y2="108"/><line x1="60" y1="72" x2="78" y2="108"/><line x1="60" y1="40" x2="22" y2="34"/><line x1="60" y1="40" x2="98" y2="34"/><path d="M14 34a8 8 0 1 1 16 0" stroke="var(--accent)"/><path d="M90 34a8 8 0 1 1 16 0" stroke="var(--accent)"/></svg>` },
+    svg:`<svg viewBox="0 0 140 140"><rect x="6" y="6" width="128" height="128" rx="20" fill="var(--bg-alt)"/><ellipse cx="70" cy="128" rx="28" ry="5" fill="var(--line)"/><circle cx="70" cy="32" r="13" fill="var(--chalk)"/><path d="M70 45v50M70 95l-15 30M70 95l15 30" stroke="var(--chalk)" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M70 55L36 50M70 55L104 50" stroke="var(--accent)" stroke-width="11" stroke-linecap="round" fill="none"/><circle cx="34" cy="49" r="11" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="3 6"/><circle cx="106" cy="49" r="11" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="3 6"/></svg>` },
   g2: { cue:'On hands and knees. Arch your back up (cat), then dip it down (cow).',
-    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="94" cy="40" r="9"/><path d="M85 46Q55 30 28 50" /><line x1="28" y1="50" x2="18" y2="90"/><line x1="28" y1="50" x2="34" y2="92"/><line x1="82" y1="52" x2="92" y2="92"/><line x1="82" y1="52" x2="98" y2="92"/></svg>` },
+    svg:`<svg viewBox="0 0 140 140"><rect x="6" y="6" width="128" height="128" rx="20" fill="var(--bg-alt)"/><ellipse cx="72" cy="126" rx="46" ry="5" fill="var(--line)"/><circle cx="113" cy="56" r="12" fill="var(--chalk)"/><path d="M100 62Q68 40 38 64" stroke="var(--chalk)" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M40 66L32 116M52 68L58 118" stroke="var(--muted)" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M96 68L90 118M106 66L113 116" stroke="var(--chalk)" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M70 24v22M64 30l6-8 6 8M64 40l6 8 6-8" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>` },
   g3: { cue:'Light jog in place or jump rope to get your heart rate up.',
-    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="62" cy="18" r="10"/><line x1="62" y1="28" x2="58" y2="64"/><line x1="58" y1="64" x2="40" y2="70"/><line x1="58" y1="64" x2="80" y2="100"/><line x1="60" y1="40" x2="34" y2="30"/><line x1="60" y1="40" x2="86" y2="52"/><path d="M20 100 Q60 130 100 60" stroke="var(--accent)"/></svg>` },
+    svg:`<svg viewBox="0 0 140 140"><rect x="6" y="6" width="128" height="128" rx="20" fill="var(--bg-alt)"/><ellipse cx="66" cy="126" rx="30" ry="5" fill="var(--line)"/><circle cx="70" cy="30" r="13" fill="var(--chalk)"/><path d="M70 43L60 82" stroke="var(--chalk)" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M60 82L84 96L68 122" stroke="var(--chalk)" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M60 82L38 100L44 124" stroke="var(--chalk)" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M64 52L92 44L102 62" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M66 52L40 58L28 46" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M8 60h16M6 75h14M10 90h16" stroke="var(--line)" stroke-width="4" stroke-linecap="round"/></svg>` },
   f1: { cue:'Circle your wrists both directions, then flick your fingers loose.',
-    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><line x1="20" y1="90" x2="58" y2="66"/><circle cx="70" cy="58" r="12"/><path d="M70 40a18 18 0 1 1-12 8" stroke="var(--accent)"/></svg>` },
+    svg:`<svg viewBox="0 0 140 140"><rect x="6" y="6" width="128" height="128" rx="20" fill="var(--bg-alt)"/><path d="M28 112L82 74" stroke="var(--chalk)" stroke-width="14" stroke-linecap="round" fill="none"/><circle cx="98" cy="63" r="17" fill="var(--chalk)"/><circle cx="82" cy="74" r="20" fill="none" stroke="var(--accent)" stroke-width="4" stroke-dasharray="4 7"/><path d="M75 40l-4 14M60 36l2 15M46 40l8 14" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" fill="none"/></svg>` },
   r1: { cue:"Traverse sideways on big, easy holds — stay loose, don't pull hard.",
-    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="20" cy="20" r="4" fill="var(--accent)" stroke="none"/><circle cx="55" cy="14" r="4" fill="var(--accent)" stroke="none"/><circle cx="90" cy="24" r="4" fill="var(--accent)" stroke="none"/><circle cx="38" cy="60" r="4" fill="var(--accent)" stroke="none"/><circle cx="78" cy="66" r="4" fill="var(--accent)" stroke="none"/><circle cx="60" cy="40" r="9"/><line x1="60" y1="49" x2="55" y2="14"/><line x1="60" y1="49" x2="78" y2="66"/><line x1="60" y1="49" x2="38" y2="60"/><line x1="60" y1="49" x2="70" y2="90"/></svg>` },
+    svg:`<svg viewBox="0 0 140 140"><rect x="6" y="6" width="128" height="128" rx="20" fill="var(--bg-alt)"/><circle cx="34" cy="30" r="7" fill="var(--accent)"/><circle cx="70" cy="20" r="7" fill="var(--accent)"/><circle cx="112" cy="36" r="7" fill="var(--accent)"/><circle cx="50" cy="76" r="7" fill="var(--accent)"/><circle cx="104" cy="84" r="7" fill="var(--accent)"/><circle cx="72" cy="58" r="13" fill="var(--chalk)"/><path d="M72 70L34 32M72 70L108 38M78 96L52 78M78 96L100 86" stroke="var(--chalk)" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M72 70L78 96" stroke="var(--chalk)" stroke-width="11" stroke-linecap="round" fill="none"/></svg>` },
   c1: { cue:'Extend your arm, pull fingers back gently with the other hand. Then reverse.',
-    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><line x1="15" y1="60" x2="65" y2="60"/><path d="M65 60l14-4M65 60l14 4M65 60l14-10M65 60l14 10" /><path d="M75 40 Q90 60 75 80" stroke="var(--accent)"/></svg>` },
+    svg:`<svg viewBox="0 0 140 140"><rect x="6" y="6" width="128" height="128" rx="20" fill="var(--bg-alt)"/><path d="M20 78h58" stroke="var(--chalk)" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M78 78l14-20M78 78l17-9M78 78l17 0M78 78l14 20" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" fill="none"/><circle cx="107" cy="52" r="12" fill="var(--chalk)"/><path d="M104 40Q118 58 100 74" stroke="var(--accent)" stroke-width="3.5" stroke-dasharray="4 6" fill="none"/></svg>` },
   c2: { cue:'Reach one arm overhead and lean gently to the opposite side.',
-    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="55" cy="20" r="10"/><path d="M55 30Q68 60 58 100"/><line x1="58" y1="100" x2="46" y2="112"/><line x1="58" y1="100" x2="70" y2="112"/><line x1="55" y1="40" x2="30" y2="55"/><line x1="58" y1="35" x2="95" y2="10"/></svg>` },
+    svg:`<svg viewBox="0 0 140 140"><rect x="6" y="6" width="128" height="128" rx="20" fill="var(--bg-alt)"/><ellipse cx="66" cy="126" rx="26" ry="5" fill="var(--line)"/><circle cx="56" cy="27" r="13" fill="var(--chalk)"/><path d="M56 40Q78 70 66 108" stroke="var(--chalk)" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M66 108L52 130M66 108L82 130" stroke="var(--chalk)" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M58 47L36 70" stroke="var(--chalk)" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M60 42Q80 26 100 8" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" fill="none"/></svg>` },
   c3: { cue:'Kneeling lunge, back knee down. Gently push your hips forward.',
-    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><circle cx="45" cy="22" r="10"/><line x1="45" y1="32" x2="52" y2="65"/><line x1="52" y1="65" x2="30" y2="100"/><line x1="52" y1="65" x2="85" y2="80"/><line x1="85" y1="80" x2="85" y2="105"/><line x1="30" y1="100" x2="15" y2="105"/><line x1="45" y1="45" x2="70" y2="35"/></svg>` },
+    svg:`<svg viewBox="0 0 140 140"><rect x="6" y="6" width="128" height="128" rx="20" fill="var(--bg-alt)"/><ellipse cx="66" cy="128" rx="44" ry="5" fill="var(--line)"/><circle cx="38" cy="28" r="12" fill="var(--chalk)"/><path d="M40 40L50 76" stroke="var(--chalk)" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M50 76L82 86L82 118" stroke="var(--chalk)" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M50 76L26 104L14 120" stroke="var(--chalk)" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M46 52L76 82" stroke="var(--chalk)" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M50 76h20M64 69l8 7-8 7" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>` },
   c4: { cue:'Squeeze and uncurl each finger, gentle circles on the palm.',
-    svg:`<svg viewBox="0 0 120 120" fill="none" stroke-width="4" stroke-linecap="round"><path d="M40 90V50a6 6 0 0 1 12 0v20M52 68V42a6 6 0 0 1 12 0v26M64 68V46a6 6 0 0 1 12 0v22M76 70V56a6 6 0 0 1 10 0v20a20 20 0 0 1-20 20H50a18 18 0 0 1-14-14l-6-16a5 5 0 0 1 9-4l5 8"/></svg>` },
+    svg:`<svg viewBox="0 0 140 140"><rect x="6" y="6" width="128" height="128" rx="20" fill="var(--bg-alt)"/><path d="M44 104V58a7 7 0 0 1 14 0v24M60 78V50a7 7 0 0 1 14 0v30M76 80V54a7 7 0 0 1 14 0v26M92 82V66a7 7 0 0 1 12 0v22a24 24 0 0 1-24 24H60a20 20 0 0 1-16-16l-7-18a6 6 0 0 1 11-4l6 9" stroke="var(--chalk)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="76" cy="90" r="16" fill="none" stroke="var(--accent)" stroke-width="3.5" stroke-dasharray="4 7"/></svg>` },
 };
 
 function showDiagram(itemId){
@@ -1063,6 +1073,12 @@ autoResetDaily();
 renderAllChecklists();
 renderDashboard();
 applyInjuryFlagUI();
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(()=>{ /* offline caching unavailable, app still works */ });
+  });
+}
 </script>
 </body>
 </html>
