@@ -105,6 +105,25 @@
   .goal-hero .countdown .n{ font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:600; }
   .goal-hero .countdown .l{ color:var(--muted); font-size:0.72rem; text-transform:uppercase; letter-spacing:.05em; }
 
+  .home-hero{ display:flex; align-items:center; gap:14px; margin-bottom:18px; }
+  .home-hero img{ width:52px; height:52px; border-radius:13px; flex-shrink:0; }
+  .home-hero h2{ font-size:1.15rem; font-weight:700; }
+  .home-hero p{ color:var(--muted); font-size:0.82rem; margin-top:2px; }
+
+  .quick-tiles{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px; }
+  .quick-tile{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 14px; text-align:left; color:var(--chalk);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .quick-tile .icon{
+    width:34px; height:34px; border-radius:9px; background:var(--panel-alt);
+    display:flex; align-items:center; justify-content:center; color:var(--accent);
+  }
+  .quick-tile .icon svg{ width:18px; height:18px; }
+  .quick-tile .label{ font-size:0.86rem; font-weight:600; }
+  .quick-tile .sub{ font-size:0.72rem; color:var(--muted); }
+
   .stat-row{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
   .stat{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:14px; }
   .stat .n{ font-family:'Space Grotesk',sans-serif; font-size:1.5rem; font-weight:600; }
@@ -270,6 +289,8 @@
   .diagram-panel.active{ display:block; }
   .diagram-panel svg{ width:130px; height:130px; }
   .diagram-panel .cue{ font-size:0.78rem; color:var(--muted); margin-top:6px; max-width:280px; margin-left:auto; margin-right:auto; line-height:1.4; }
+  .diagram-photo{ width:170px; max-width:80%; max-height:170px; border-radius:14px; object-fit:cover; display:block; margin:0 auto; border:1px solid var(--line); }
+  .diagram-video{ width:170px; max-width:80%; max-height:170px; border-radius:14px; object-fit:cover; display:block; margin:0 auto; border:1px solid var(--line); }
 
   /* ---- journal ---- */
   .journal-item{ padding:12px 0; border-bottom:1px solid var(--line); }
@@ -325,6 +346,33 @@
 
     <!-- ============ DASHBOARD ============ -->
     <section class="view active" id="view-dashboard">
+
+      <div class="home-hero">
+        <img src="icon-192.png" alt="ClimbOS">
+        <div>
+          <h2>Welcome back.</h2>
+          <p>Your V8 project — tracked one session at a time.</p>
+        </div>
+      </div>
+
+      <div class="quick-tiles">
+        <button class="quick-tile" onclick="goTo('warmup')">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div><div class="label">Start warmup</div><div class="sub">Preset checklist + timer</div></div>
+        </button>
+        <button class="quick-tile" onclick="goTo('log')">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg></div>
+          <div><div class="label">Log session</div><div class="sub">Grade, attempts, photos</div></div>
+        </button>
+        <button class="quick-tile" onclick="goTo('cooldown')">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v6a6 6 0 0012 0V3M4 21h16"/></svg></div>
+          <div><div class="label">Cooldown</div><div class="sub">Stretch & recover</div></div>
+        </button>
+        <button class="quick-tile" onclick="goTo('journal')">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4h11a2 2 0 012 2v13l-3-2-3 2-3-2-3 2V6a2 2 0 012-2z"/></svg></div>
+          <div><div class="label">Journal</div><div class="sub">How's it feeling</div></div>
+        </button>
+      </div>
 
       <div class="flag-banner" id="flagBanner">
         <div class="t">Finger status requires assessment</div>
@@ -509,7 +557,7 @@
     <div class="row">
       <button class="tab-btn active" data-view="dashboard" onclick="goTo('dashboard')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
-        Dashboard
+        Home
       </button>
       <button class="tab-btn" data-view="warmup" onclick="goTo('warmup')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
@@ -978,12 +1026,31 @@ function showDiagram(itemId){
   const d = DIAGRAMS[itemId];
   const panel = document.getElementById('diagramPanel');
   if(!d){ panel.classList.remove('active'); return; }
-  document.getElementById('diagramSvgWrap').innerHTML = d.svg;
   document.getElementById('diagramCue').textContent = d.cue;
   panel.classList.add('active');
+
+  const wrap = document.getElementById('diagramSvgWrap');
+  wrap.innerHTML = d.svg; // show the illustration immediately, swap to video/photo if one exists
+
+  const video = document.createElement('video');
+  video.className = 'diagram-video';
+  video.autoplay = true; video.muted = true; video.loop = true; video.playsInline = true;
+  video.setAttribute('aria-label', d.cue);
+  video.oncanplay = () => { wrap.innerHTML = ''; wrap.appendChild(video); };
+  video.onerror = () => { tryPhoto(itemId, d, wrap); };
+  video.src = `stretch-photos/${itemId}.mp4`;
+}
+function tryPhoto(itemId, d, wrap){
+  const photo = new Image();
+  photo.alt = d.cue;
+  photo.className = 'diagram-photo';
+  photo.onload = () => { wrap.innerHTML = ''; wrap.appendChild(photo); };
+  photo.onerror = () => { /* no custom video or photo for this step — keep the illustration */ };
+  photo.src = `stretch-photos/${itemId}.jpg`;
 }
 function hideDiagram(){
   document.getElementById('diagramPanel').classList.remove('active');
+  document.getElementById('diagramSvgWrap').innerHTML = ''; // stop any playing video
 }
 
 /* ---------------- journal ---------------- */
