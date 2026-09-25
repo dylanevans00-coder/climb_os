@@ -458,6 +458,8 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
 .home-hero h2{text-shadow:0 2px 18px #101e1a}.home-hero p{color:#d5dfce}
 @keyframes valleyDrift{to{transform:translateX(15%)}}
 @media(min-width:800px){.app{border-left:1px solid #b6d09715;border-right:1px solid #b6d09715}.wilderness svg{opacity:.85}}
+
+.wall-scroll{overflow:auto;max-height:65vh;margin-top:12px;border-radius:14px}.wall-scroll .wall-frame{max-width:none}.wall-frame img{pointer-events:none}.hold-marker{font-family:inherit;font-size:11px;min-width:36px;width:36px;height:36px;color:#12251a!important;box-shadow:0 0 0 2px #0d1915}.hold-marker:active{transform:translate(-50%,-50%) scale(.95)}.hold-marker.hand{background:#f2f4e9}.hold-marker.foot{background:#f1b78b;border-radius:6px}.hold-marker.finish{background:#c5ed79}.hold-marker.start{background:#c6b8ee}.hold-marker.mini{min-width:13px;width:13px;height:13px}#wallCursor{display:none;position:absolute;left:50%;top:50%;width:18px;height:18px;border:2px dashed white;transform:translate(-50%,-50%);pointer-events:none}#wallFrame:focus #wallCursor{display:block}#hold-list{padding-left:20px;max-height:190px;overflow:auto}#hold-list li{padding:5px}#hold-list button{width:auto;margin-left:12px;padding:6px 12px;min-height:44px}.wall-actions{flex-wrap:wrap}.wall-actions button{min-width:110px}#wall-help{margin-top:12px}#wall-zoom{width:100%;appearance:auto;min-height:44px}.guide-btn{font:inherit;font-size:.75rem;min-height:44px;background:var(--panel-alt);color:var(--chalk);border:1px solid var(--line);border-radius:10px;padding:5px 9px}.check-item{flex-wrap:wrap}.check-item .txt{flex:1;min-width:110px}.check-item .box{min-width:32px;min-height:32px}.timer-btn{min-width:44px;min-height:44px}.diagram-panel.active{position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:min(520px,calc(100% - 24px));max-height:88vh;overflow:auto;z-index:150;background:var(--bg-alt);padding:20px;border:1px solid var(--line);border-radius:24px;box-shadow:0 0 0 100vmax #000b}.diagram-panel svg{width:100%;height:auto;max-height:55vh}.diagram-panel .cue{font-size:1rem;line-height:1.6;max-width:440px}.climb-detail .close{width:44px;height:44px}.climb-detail-info>.btn{margin-top:10px}
 </style>
 </head>
 <body>
@@ -483,7 +485,7 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
   </div>
 
   <div class="diagram-panel" id="diagramPanel">
-    <div id="diagramSvgWrap"></div>
+    <button id="closeGuide" class="btn secondary" onclick="hideDiagram()">Close guide</button><div id="diagramSvgWrap"></div>
     <div class="cue" id="diagramCue"></div>
   </div>
 
@@ -585,7 +587,7 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
     <section class="view" id="view-log">
       <h2 style="margin-bottom:14px;">Log session</h2>
       <div class="card">
-        <label>Date</label>
+        <label for="f-date">Date</label>
         <input type="date" id="f-date">
 
         <label>Session focus</label>
@@ -596,14 +598,14 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
           <button data-v="Project">Project</button>
         </div>
 
-        <label>Grade attempted</label>
+        <label for="f-grade">Grade attempted</label>
         <select id="f-grade">
           <option>V0</option><option>V1</option><option>V2</option><option>V3</option>
           <option>V4</option><option>V5</option><option>V6</option><option selected>V7</option>
           <option>V8</option><option>V9</option><option>V10</option>
         </select>
 
-        <label>Attempts</label>
+        <label for="f-attempts">Attempts</label>
         <input type="number" id="f-attempts" min="1" value="1">
 
         <div class="toggle-row">
@@ -611,7 +613,7 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
           <div class="switch" id="f-sent" onclick="toggleSwitch(this)"><div class="knob"></div></div>
         </div>
 
-        <label>Style / notes</label>
+        <label for="f-notes">Style / notes</label>
         <textarea id="f-notes" placeholder="Crimpy overhang, felt strong on the crux..."></textarea>
 
         <label>Photos</label>
@@ -688,7 +690,7 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
           <button data-v="Rough">Rough</button>
           <button data-v="Injured">Injured</button>
         </div>
-        <label>Entry</label>
+        <label for="j-text">Entry</label>
         <textarea id="j-text" placeholder="Fingers felt tight in the first hour, loosened up by the third problem. Mental block on overhangs today..."></textarea>
         <div class="divider"></div>
         <button class="btn" onclick="saveJournalEntry()">Save entry</button>
@@ -718,22 +720,22 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
               Take or upload wall photo
             </label>
           </div>
-          <input type="file" id="cw-photo-input" accept="image/*" capture="environment" onchange="handleWallPhoto(event)">
+          <input hidden type="file" id="cw-upload-input" accept="image/*" onchange="handleWallPhoto(event)"><input type="file" id="cw-photo-input" accept="image/*" capture="environment" onchange="handleWallPhoto(event)">
 
-          <label>Climb name</label>
+          <label for="cw-name">Climb name</label>
           <input type="text" id="cw-name" placeholder="Orange dyno problem">
 
-          <label>Grade</label>
+          <label for="cw-grade">Grade</label>
           <select id="cw-grade">
             <option>V0</option><option>V1</option><option>V2</option><option>V3</option>
             <option selected>V4</option><option>V5</option><option>V6</option><option>V7</option>
             <option>V8</option><option>V9</option><option>V10</option>
           </select>
 
-          <label>Notes</label>
+          <label for="cw-notes">Notes</label>
           <textarea id="cw-notes" placeholder="Heel hook on hold 4, dyno to finish..."></textarea>
 
-          <p class="fine-print" id="cw-status" style="margin-top:10px;"></p>
+          <p role="status" aria-live="polite" class="fine-print" id="cw-status" style="margin-top:10px;"></p>
 
           <div class="divider"></div>
           <div class="wall-actions">
@@ -791,7 +793,7 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
     <div class="row"><h3 id="climbDetailName"></h3><span class="grade-badge" id="climbDetailGrade"></span></div>
     <p class="fine-print" id="climbDetailNotes"></p>
     <div class="divider"></div>
-    <button class="btn danger-outline" onclick="deleteClimbEntry()">Delete climb</button>
+    <button class="btn secondary" onclick="editCurrentClimb()">Edit climb</button><button class="btn secondary" onclick="editCurrentClimb(true)">New climb on this wall</button><button class="btn danger-outline" onclick="deleteClimbEntry()">Delete climb</button>
   </div>
 </div>
 
@@ -849,9 +851,10 @@ function renderChecklist(containerId, items, storeKey){
   const el = document.getElementById(containerId);
   el.innerHTML = items.map(it => `
     <div class="check-item ${state[it.id] ? 'done':''}">
-      <div class="box" onclick="toggleCheck('${storeKey}','${it.id}')"></div>
+      <button class="box" aria-label="${it.name}" aria-pressed="${!!state[it.id]}" onclick="toggleCheck('${storeKey}','${it.id}')"></button>
       <div class="txt" onclick="toggleCheck('${storeKey}','${it.id}')"><div class="name">${it.name}</div>${it.meta ? `<div class="meta">${it.meta}</div>`:''}</div>
-      ${it.sec ? `<button class="timer-btn" onclick="event.stopPropagation(); startTimer(${it.sec}, '${it.name.replace(/'/g,"\\'")}', '${storeKey}', '${it.id}')">
+      ${["g1","g2","g3","f1","r1","c1","c2","c3","c4"].includes(it.id) ? `<button class="guide-btn" onclick="showDiagram('${it.id}')">View guide</button>` : ""}
+      ${it.sec ? `<button aria-label="Start timer: ${it.name}" class="timer-btn" onclick="event.stopPropagation(); startTimer(${it.sec}, '${it.name.replace(/'/g,"\\'")}', '${storeKey}', '${it.id}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
       </button>` : ''}
     </div>`).join('');
@@ -1140,7 +1143,7 @@ async function savePhotos(sessionId, dataUrls){
   return new Promise((resolve,reject)=>{
     const tx = db.transaction('photos','readwrite');
     tx.objectStore('photos').put(dataUrls, sessionId);
-    tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error);
+    tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error); tx.onabort=()=>reject(tx.error||new Error("Transaction aborted"));
   });
 }
 async function deletePhotosFor(sessionId){
@@ -1148,7 +1151,7 @@ async function deletePhotosFor(sessionId){
   return new Promise((resolve,reject)=>{
     const tx = db.transaction('photos','readwrite');
     tx.objectStore('photos').delete(sessionId);
-    tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error);
+    tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error); tx.onabort=()=>reject(tx.error||new Error("Transaction aborted"));
   });
 }
 async function getAllPhotosMap(){
@@ -1166,26 +1169,15 @@ async function getAllPhotosMap(){
     req.onerror = ()=>reject(req.error);
   });
 }
-function resizeImage(file, maxDim, quality){
-  maxDim = maxDim || 900;
-  quality = quality || 0.72;
-  return new Promise((resolve)=>{
-    const img = new Image();
-    const reader = new FileReader();
-    reader.onload = e => { img.src = e.target.result; };
-    img.onload = () => {
-      let {width, height} = img;
-      if(width > maxDim || height > maxDim){
-        const scale = maxDim / Math.max(width, height);
-        width = Math.round(width*scale); height = Math.round(height*scale);
-      }
-      const canvas = document.createElement('canvas');
-      canvas.width = width; canvas.height = height;
-      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL('image/jpeg', quality));
-    };
-    reader.readAsDataURL(file);
-  });
+function resizeImage(file,maxDim=900,quality=.72){
+ return new Promise((resolve,reject)=>{
+ const img=new Image(),reader=new FileReader();
+ reader.onerror=()=>reject(new Error('File could not be read'));reader.onabort=()=>reject(new Error('Read cancelled'));
+ img.onerror=()=>reject(new Error('Image could not be decoded'));
+ reader.onload=e=>{img.src=e.target.result};
+ img.onload=()=>{try{const scale=Math.min(1,maxDim/Math.max(img.naturalWidth,img.naturalHeight));const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.naturalWidth*scale));canvas.height=Math.max(1,Math.round(img.naturalHeight*scale));canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL('image/jpeg',quality));}catch(e){reject(e)}};
+ reader.readAsDataURL(file);
+ });
 }
 async function handlePhotoInput(evt){
   const files = Array.from(evt.target.files || []);
@@ -1236,36 +1228,20 @@ const DIAGRAMS = {
     svg:`<svg viewBox="0 0 140 140"><rect x="6" y="6" width="128" height="128" rx="20" fill="var(--bg-alt)"/><path d="M44 104V58a7 7 0 0 1 14 0v24M60 78V50a7 7 0 0 1 14 0v30M76 80V54a7 7 0 0 1 14 0v26M92 82V66a7 7 0 0 1 12 0v22a24 24 0 0 1-24 24H60a20 20 0 0 1-16-16l-7-18a6 6 0 0 1 11-4l6 9" stroke="var(--chalk)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="76" cy="90" r="16" fill="none" stroke="var(--accent)" stroke-width="3.5" stroke-dasharray="4 7"/></svg>` },
 };
 
+DIAGRAMS["c1"].svg="<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 440\" role=\"img\" aria-label=\"Forearm stretch\"><rect width=\"640\" height=\"440\" rx=\"24\" fill=\"#192b24\"/><circle cx=\"490\" cy=\"170\" r=\"135\" fill=\"#c5ed7909\"/><text x=\"30\" y=\"42\" fill=\"#f2f4e9\" font-family=\"sans-serif\" font-size=\"23\" font-weight=\"bold\">Forearm stretch</text><text x=\"30\" y=\"70\" fill=\"#adbdaf\" font-family=\"sans-serif\" font-size=\"15\">Two positions \u00b7 repeat on the other arm</text><path d=\"M40 368H600\" stroke=\"#526446\" stroke-width=\"3\"/><g transform=\"translate(0 0)\"><path d=\"M55 234L198 234\" fill=\"none\" stroke=\"#c5ed79\" stroke-width=\"28\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M198 234L226 196\" fill=\"none\" stroke=\"#d7b391\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M229 198L239 186\" fill=\"none\" stroke=\"#d7b391\" stroke-width=\"10\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M158 325L195 284L229 203\" fill=\"none\" stroke=\"#d7b391\" stroke-width=\"19\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"90\" y=\"151\" fill=\"#c6b8ee\" font-size=\"18\" font-family=\"sans-serif\">Palm up</text></g><g transform=\"translate(300 0)\"><path d=\"M55 234L198 234\" fill=\"none\" stroke=\"#c5ed79\" stroke-width=\"28\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M198 234L226 272\" fill=\"none\" stroke=\"#d7b391\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M229 270L239 282\" fill=\"none\" stroke=\"#d7b391\" stroke-width=\"10\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M158 325L195 284L229 265\" fill=\"none\" stroke=\"#d7b391\" stroke-width=\"19\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><text x=\"90\" y=\"151\" fill=\"#c6b8ee\" font-size=\"18\" font-family=\"sans-serif\">Palm down</text></g><text x=\"50\" y=\"403\" fill=\"#adbdaf\" font-size=\"16\" font-family=\"sans-serif\">Support the hand gently \u00b7 keep the movement small</text></svg>";
+DIAGRAMS["c2"].svg="<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 440\" role=\"img\" aria-label=\"Shoulder &amp; lat stretch\"><rect width=\"640\" height=\"440\" rx=\"24\" fill=\"#192b24\"/><circle cx=\"490\" cy=\"170\" r=\"135\" fill=\"#c5ed7909\"/><text x=\"30\" y=\"42\" fill=\"#f2f4e9\" font-family=\"sans-serif\" font-size=\"23\" font-weight=\"bold\">Shoulder &amp; lat stretch</text><text x=\"30\" y=\"70\" fill=\"#adbdaf\" font-family=\"sans-serif\" font-size=\"15\">Front view \u00b7 steady, comfortable position</text><path d=\"M40 368H600\" stroke=\"#526446\" stroke-width=\"3\"/><circle cx=\"292\" cy=\"132\" r=\"19\" fill=\"#d7b391\"/><path d=\"M274 129q-2-25 21-20q18 3 16 17q-20-10-37 3\" fill=\"#354137\"/><path d=\"M304 164Q339 210 331 254\" fill=\"none\" stroke=\"#c5ed79\" stroke-width=\"43\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M320 256L302 347\" fill=\"none\" stroke=\"#c6b8ee\" stroke-width=\"25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M342 256L366 347\" fill=\"none\" stroke=\"#a595cc\" stroke-width=\"25\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M293 173L272 217L292 258\" fill=\"none\" stroke=\"#d7b391\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M321 165L348 119L289 99\" fill=\"none\" stroke=\"#d7b391\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M300 355L279 355\" fill=\"none\" stroke=\"#eee8d8\" stroke-width=\"14\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M366 355L385 355\" fill=\"none\" stroke=\"#eee8d8\" stroke-width=\"14\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M384 130Q374 97 351 91m8-5l-8 5 6 8\" fill=\"none\" stroke=\"#c5ed79\" stroke-width=\"3\"/><text x=\"56\" y=\"403\" fill=\"#adbdaf\" font-size=\"16\" font-family=\"sans-serif\">Reach overhead \u00b7 a small side bend \u00b7 switch sides</text></svg>";
+DIAGRAMS["c3"].svg="<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 440\" role=\"img\" aria-label=\"Hip flexor stretch\"><rect width=\"640\" height=\"440\" rx=\"24\" fill=\"#192b24\"/><circle cx=\"490\" cy=\"170\" r=\"135\" fill=\"#c5ed7909\"/><text x=\"30\" y=\"42\" fill=\"#f2f4e9\" font-family=\"sans-serif\" font-size=\"23\" font-weight=\"bold\">Hip flexor stretch</text><text x=\"30\" y=\"70\" fill=\"#adbdaf\" font-family=\"sans-serif\" font-size=\"15\">Side view \u00b7 kneeling lunge</text><path d=\"M40 368H600\" stroke=\"#526446\" stroke-width=\"3\"/><circle cx=\"283\" cy=\"139\" r=\"19\" fill=\"#d7b391\"/><path d=\"M265 136q-2-25 21-20q18 3 16 17q-20-10-37 3\" fill=\"#354137\"/><path d=\"M283 165L283 242\" fill=\"none\" stroke=\"#c5ed79\" stroke-width=\"42\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M283 245L372 267L375 349\" fill=\"none\" stroke=\"#c6b8ee\" stroke-width=\"26\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M281 245L228 347L150 347\" fill=\"none\" stroke=\"#a595cc\" stroke-width=\"26\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M303 183L326 223L365 252\" fill=\"none\" stroke=\"#d7b391\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M373 354L404 354\" fill=\"none\" stroke=\"#eee8d8\" stroke-width=\"14\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M144 351L136 359\" fill=\"none\" stroke=\"#eee8d8\" stroke-width=\"14\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"191\" y=\"362\" width=\"71\" height=\"7\" rx=\"3\" fill=\"#c5ed79\"/><path d=\"M281 270h39m-9-7l9 7-9 7\" fill=\"none\" stroke=\"#c5ed79\" stroke-width=\"3\"/><text x=\"50\" y=\"403\" fill=\"#adbdaf\" font-size=\"16\" font-family=\"sans-serif\">Back knee supported \u00b7 torso upright \u00b7 switch sides</text></svg>";
+let guideReturnFocus;
 function showDiagram(itemId){
-  const d = DIAGRAMS[itemId];
-  const panel = document.getElementById('diagramPanel');
-  if(!d){ panel.classList.remove('active'); return; }
-  document.getElementById('diagramCue').textContent = d.cue;
-  panel.classList.add('active');
-
-  const wrap = document.getElementById('diagramSvgWrap');
-  wrap.innerHTML = d.svg; // show the illustration immediately, swap to video/photo if one exists
-
-  const video = document.createElement('video');
-  video.className = 'diagram-video';
-  video.autoplay = true; video.muted = true; video.loop = true; video.playsInline = true;
-  video.setAttribute('aria-label', d.cue);
-  video.oncanplay = () => { wrap.innerHTML = ''; wrap.appendChild(video); };
-  video.onerror = () => { tryPhoto(itemId, d, wrap); };
-  video.src = `stretch-photos/${itemId}.mp4`;
+ const d=DIAGRAMS[itemId]; if(!d)return;
+ const panel=document.getElementById('diagramPanel');
+ guideReturnFocus=document.activeElement;
+ document.getElementById('diagramCue').textContent=d.cue;
+ document.getElementById('diagramSvgWrap').innerHTML=d.svg;
+ panel.classList.add('active');panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-label','Movement guide');
+ document.getElementById('closeGuide').focus();
 }
-function tryPhoto(itemId, d, wrap){
-  const photo = new Image();
-  photo.alt = d.cue;
-  photo.className = 'diagram-photo';
-  photo.onload = () => { wrap.innerHTML = ''; wrap.appendChild(photo); };
-  photo.onerror = () => { /* no custom video or photo for this step — keep the illustration */ };
-  photo.src = `stretch-photos/${itemId}.jpg`;
-}
-function hideDiagram(){
-  document.getElementById('diagramPanel').classList.remove('active');
-  document.getElementById('diagramSvgWrap').innerHTML = ''; // stop any playing video
-}
+function hideDiagram(){document.getElementById('diagramPanel').classList.remove('active');document.getElementById('diagramSvgWrap').innerHTML='';guideReturnFocus?.focus();}
 
 /* ---------------- spray wall ---------------- */
 async function saveClimb(climb){
@@ -1273,7 +1249,7 @@ async function saveClimb(climb){
   return new Promise((resolve,reject)=>{
     const tx = db.transaction('climbs','readwrite');
     tx.objectStore('climbs').put(climb, climb.id);
-    tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error);
+    tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error); tx.onabort=()=>reject(tx.error||new Error("Transaction aborted"));
   });
 }
 async function deleteClimbFromDB(id){
@@ -1281,7 +1257,7 @@ async function deleteClimbFromDB(id){
   return new Promise((resolve,reject)=>{
     const tx = db.transaction('climbs','readwrite');
     tx.objectStore('climbs').delete(id);
-    tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error);
+    tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error); tx.onabort=()=>reject(tx.error||new Error("Transaction aborted"));
   });
 }
 async function getAllClimbs(){
@@ -1302,95 +1278,60 @@ async function getAllClimbs(){
 let currentWallPhoto = null;
 let currentHolds = [];
 
+let editingClimbId=null, wallZoom=1;
+const photoButtons=()=>`<div class="wall-actions"><button class="btn" onclick="document.getElementById('cw-photo-input').click()">Take photo</button><button class="btn secondary" onclick="document.getElementById('cw-upload-input').click()">Upload photo</button></div>`;
 function openClimbCreator(){
-  currentWallPhoto = null;
-  currentHolds = [];
-  document.getElementById('cw-name').value = '';
-  document.getElementById('cw-grade').value = 'V4';
-  document.getElementById('cw-notes').value = '';
-  document.getElementById('cw-status').textContent = '';
-  document.getElementById('cw-photo-area').innerHTML = `
-    <label class="photo-input-btn" for="cw-photo-input">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M9 6l1-2h4l1 2"/></svg>
-      Take or upload wall photo
-    </label>`;
-  document.getElementById('climbListPane').style.display = 'none';
-  document.getElementById('climbEditorPane').style.display = 'block';
+ editingClimbId=null;currentWallPhoto=null;currentHolds=[];wallZoom=1;
+ document.getElementById('cw-name').value='';document.getElementById('cw-grade').value='V4';document.getElementById('cw-notes').value='';
+ document.getElementById('cw-status').textContent='';
+ document.getElementById('cw-photo-area').innerHTML=photoButtons();
+ document.getElementById('climbListPane').style.display='none';document.getElementById('climbEditorPane').style.display='block';
+ document.querySelector('#climbEditorPane h2').textContent='New climb';
+ document.querySelector('#cw-photo-area button').focus();
 }
-function closeClimbCreator(){
-  document.getElementById('climbEditorPane').style.display = 'none';
-  document.getElementById('climbListPane').style.display = 'block';
-  renderClimbList();
-}
+function closeClimbCreator(){document.getElementById('climbEditorPane').style.display='none';document.getElementById('climbListPane').style.display='block';renderClimbList();}
 async function handleWallPhoto(evt){
-  const file = evt.target.files && evt.target.files[0];
-  if(!file) return;
-  currentWallPhoto = await resizeImage(file, 1100, 0.8);
-  currentHolds = [];
-  renderWallEditor();
+ const file=evt.target.files?.[0];if(!file)return;if(currentWallPhoto&&currentHolds.length&&!confirm('Replace the photo and remove its marked holds?')){evt.target.value='';return;}
+ const status=document.getElementById('cw-status');status.textContent='Preparing photo…';
+ try{const photo=await resizeImage(file,1800,.88);currentWallPhoto=photo;currentHolds=[];wallZoom=1;renderWallEditor();status.textContent='Photo ready. Choose a hold type, then tap the wall.';}
+ catch(e){status.textContent='Could not open that photo. Try a JPG or PNG.';}finally{evt.target.value='';}
 }
 function renderWallEditor(){
-  const area = document.getElementById('cw-photo-area');
-  area.innerHTML = `
-    <div class="wall-frame" id="wallFrame">
-      <img src="${currentWallPhoto}" id="wallImg" alt="Your spray wall">
-      <div class="hold-layer" id="wallHoldLayer"></div>
-    </div>
-    <p class="fine-print" style="margin-top:8px;">Tap the wall to mark each hold, in order.</p>
-    <div class="wall-actions">
-      <button class="btn secondary" type="button" onclick="undoHold()">Undo last</button>
-      <button class="btn secondary" type="button" onclick="clearHolds()">Clear</button>
-    </div>`;
-  document.getElementById('wallFrame').addEventListener('click', onWallTap);
-  renderHoldLayer();
+ document.getElementById('cw-photo-area').innerHTML=`${photoButtons()}
+ <label for="hold-type">Next hold type</label><select id="hold-type"><option value="start">Start (S)</option><option value="hand">Hand (H)</option><option value="foot">Foot (T)</option><option value="finish">Finish (F)</option></select>
+ <p class="fine-print" id="wall-help">Tap to add a hold. Tap a marker to remove it. Zoom for precision; scroll to pan. Keyboard: focus the wall, use arrow keys to position the cursor, Enter to place a hold.</p>
+ <label for="wall-zoom">Zoom</label><input id="wall-zoom" type="range" min="1" max="3" step=".25" value="${wallZoom}" oninput="setWallZoom(this.value)">
+ <div class="wall-scroll"><div class="wall-frame" id="wallFrame" tabindex="0" role="group" aria-label="Wall hold editor" aria-describedby="wall-help" style="width:${wallZoom*100}%">
+ <img src="${currentWallPhoto}" id="wallImg" alt="Your spray wall"><div class="hold-layer" id="wallHoldLayer"></div><div id="wallCursor" aria-hidden="true"></div></div></div>
+ <div class="wall-actions"><button class="btn secondary" onclick="undoHold()">Undo last</button><button class="btn secondary" onclick="clearHolds()">Clear holds</button></div><p id="hold-count" role="status"></p><ol id="hold-list"></ol>`;
+ document.getElementById('wallFrame').addEventListener('click',onWallTap);
+ document.getElementById('wallFrame').addEventListener('keydown',wallKey);
+ renderHoldLayer();
 }
-function onWallTap(e){
-  const img = document.getElementById('wallImg');
-  const rect = img.getBoundingClientRect();
-  const x = ((e.clientX - rect.left) / rect.width) * 100;
-  const y = ((e.clientY - rect.top) / rect.height) * 100;
-  if(x < 0 || x > 100 || y < 0 || y > 100) return;
-  currentHolds.push({x, y});
-  renderHoldLayer();
+function setWallZoom(value){wallZoom=Number(value);document.getElementById('wallFrame').style.width=wallZoom*100+'%';}
+let cursorX=50,cursorY=50;
+function wallKey(e){if(e.target!==e.currentTarget)return;const moves={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};if(moves[e.key]){e.preventDefault();cursorX=Math.max(0,Math.min(100,cursorX+moves[e.key][0]));cursorY=Math.max(0,Math.min(100,cursorY+moves[e.key][1]));}else if(e.key==='Enter'||e.key===' '){e.preventDefault();addHold(cursorX,cursorY);}else return;const c=document.getElementById('wallCursor');c.style.left=cursorX+'%';c.style.top=cursorY+'%';}
+function addHold(x,y){currentHolds.push({x,y,type:document.getElementById('hold-type').value});renderHoldLayer();}
+function onWallTap(e){if(e.target.closest('button'))return;const r=document.getElementById('wallImg').getBoundingClientRect();const x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100;if(x>=0&&x<=100&&y>=0&&y<=100)addHold(x,y);}
+function undoHold(){currentHolds.pop();renderHoldLayer();}
+function clearHolds(){if(currentHolds.length&&!confirm('Remove all marked holds?'))return;currentHolds=[];renderHoldLayer();}
+function removeHold(i){currentHolds.splice(i,1);renderHoldLayer();document.getElementById('wallFrame').focus();}
+function holdType(h,i,holds){return h.type||(i===0?'start':i===holds.length-1?'finish':'hand');}
+function holdMarkersHtml(holds,mini,editable=false){
+ return holds.map((h,i)=>{const type=holdType(h,i,holds),label={start:'S',hand:'H',foot:'T',finish:'F'}[type];const tag=editable?'button':'span';return `<${tag} ${editable?`type="button" onclick="event.stopPropagation();removeHold(${i})" aria-label="Remove ${type} hold ${i+1}"`:''} class="hold-marker ${type}${mini?' mini':''}" style="left:${h.x}%;top:${h.y}%">${mini?'':label+(i+1)}</${tag}>`;}).join('');
 }
-function undoHold(){ currentHolds.pop(); renderHoldLayer(); }
-function clearHolds(){ currentHolds = []; renderHoldLayer(); }
-function holdMarkersHtml(holds, mini){
-  const pts = holds.map(h => `${h.x},${h.y}`).join(' ');
-  const line = holds.length > 1 ? `<svg class="hold-path" viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="${pts}"/></svg>` : '';
-  const markers = holds.map((h,i) => {
-    const isFirst = i === 0;
-    const isLast = i === holds.length - 1 && holds.length > 1;
-    const cls = 'hold-marker' + (isFirst ? ' start' : isLast ? ' finish' : '') + (mini ? ' mini' : '');
-    const label = mini ? '' : (isFirst ? 'S' : isLast ? 'F' : i+1);
-    return `<div class="${cls}" style="left:${h.x}%; top:${h.y}%;">${label}</div>`;
-  }).join('');
-  return line + markers;
-}
-function renderHoldLayer(){
-  const layer = document.getElementById('wallHoldLayer');
-  if(!layer) return;
-  layer.innerHTML = holdMarkersHtml(currentHolds, false);
-}
+function renderHoldLayer(){const layer=document.getElementById('wallHoldLayer');if(!layer)return;layer.innerHTML=holdMarkersHtml(currentHolds,false,true);document.getElementById('hold-count').textContent=currentHolds.length+' holds marked';document.getElementById('hold-list').innerHTML=currentHolds.map((h,i)=>`<li>${holdType(h,i,currentHolds)} ${i+1} <button class="btn secondary" onclick="removeHold(${i})">Remove</button></li>`).join('');}
 async function saveClimbEntry(){
-  const status = document.getElementById('cw-status');
-  if(!currentWallPhoto){ status.textContent = 'Add a wall photo first.'; return; }
-  if(currentHolds.length === 0){ status.textContent = 'Tap at least one hold on the photo.'; return; }
-  const climb = {
-    id: Date.now(),
-    name: document.getElementById('cw-name').value.trim() || 'Untitled climb',
-    grade: document.getElementById('cw-grade').value,
-    notes: document.getElementById('cw-notes').value.trim(),
-    photo: currentWallPhoto,
-    holds: currentHolds,
-    date: new Date().toISOString().slice(0,10)
-  };
-  await saveClimb(climb);
-  closeClimbCreator();
+ const status=document.getElementById('cw-status');
+ if(!currentWallPhoto){status.textContent='Add a wall photo first.';return;}
+ if(!currentHolds.some((h,i)=>holdType(h,i,currentHolds)==='start')||!currentHolds.some((h,i)=>holdType(h,i,currentHolds)==='finish')){status.textContent='Mark at least one start and one finish hold.';return;}
+ try{await saveClimb({id:editingClimbId||Date.now(),name:document.getElementById('cw-name').value.trim()||'Untitled climb',grade:document.getElementById('cw-grade').value,notes:document.getElementById('cw-notes').value.trim(),photo:currentWallPhoto,holds:currentHolds,date:new Date().toISOString().slice(0,10)});closeClimbCreator();}
+ catch(e){status.textContent='Could not save. Your photo and holds are still here. Device storage may be full or unavailable.';}
 }
+async function editCurrentClimb(copy=false){try{const c=(await getAllClimbs()).find(c=>c.id===openClimbId);if(!c)return;closeClimbDetail();openClimbCreator();editingClimbId=copy?null:c.id;currentWallPhoto=c.photo;currentHolds=copy?[]:c.holds.map(h=>({...h}));document.getElementById('cw-name').value=copy?'':c.name;document.getElementById('cw-grade').value=c.grade;document.getElementById('cw-notes').value=copy?'':c.notes;document.querySelector('#climbEditorPane h2').textContent=copy?'New climb':'Edit climb';renderWallEditor();}catch(e){alert('Could not load this climb. Please try again.');}}
 async function renderClimbList(){
   const grid = document.getElementById('climbGrid');
-  const climbs = await getAllClimbs();
+  let climbs;try{climbs=await getAllClimbs();}catch(e){grid.textContent='Saved climbs could not be loaded. Try reopening the app.';return;}
   grid.innerHTML = climbs.length ? climbs.map(c => `
     <button class="climb-card" onclick="openClimbDetail(${c.id})">
       <div class="wall-frame">
@@ -1403,26 +1344,27 @@ async function renderClimbList(){
       </div>
     </button>`).join('') : '<div class="empty">No custom climbs yet — set one from a spray wall photo.</div>';
 }
-let openClimbId = null;
+let openClimbId = null, climbReturnFocus=null;
 async function openClimbDetail(id){
   const climbs = await getAllClimbs();
   const c = climbs.find(x => x.id === id);
   if(!c) return;
-  openClimbId = id;
+  climbReturnFocus=document.activeElement;openClimbId = id;
   document.getElementById('climbDetailImg').src = c.photo;
   document.getElementById('climbDetailName').textContent = c.name;
   document.getElementById('climbDetailGrade').textContent = c.grade;
   document.getElementById('climbDetailNotes').textContent = c.notes || 'No notes added.';
   document.getElementById('climbDetailHolds').innerHTML = holdMarkersHtml(c.holds, false);
-  document.getElementById('climbDetail').classList.add('active');
+  const modal=document.getElementById('climbDetail');modal.classList.add('active');modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-labelledby','climbDetailName');modal.querySelector('button').focus();
 }
 function closeClimbDetail(){
   document.getElementById('climbDetail').classList.remove('active');
-  openClimbId = null;
+  openClimbId = null;climbReturnFocus?.focus();
 }
 async function deleteClimbEntry(){
   if(openClimbId == null) return;
-  await deleteClimbFromDB(openClimbId);
+  if(!confirm('Delete this saved climb?'))return;
+  try{await deleteClimbFromDB(openClimbId);}catch(e){alert('Could not delete the climb. Please try again.');return;}
   closeClimbDetail();
   renderClimbList();
 }
@@ -1509,6 +1451,7 @@ function setDelta(id, diff, suffix){
   else { el.textContent = 'same as last wk'; el.className = 'delta flat'; }
 }
 
+document.addEventListener('keydown',e=>{const modal=document.querySelector('.diagram-panel.active')||document.querySelector('.climb-detail.active');if(!modal)return;if(e.key==='Escape'){if(modal.id==='diagramPanel')hideDiagram();else closeClimbDetail();}if(e.key==='Tab'){const items=modal.querySelectorAll('button,[href],input,select,textarea,[tabindex="0"]');const first=items[0],last=items[items.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
 /* ---------------- init ---------------- */
 autoResetDaily();
 renderAllChecklists();
