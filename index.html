@@ -460,6 +460,13 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
 @media(min-width:800px){.app{border-left:1px solid #b6d09715;border-right:1px solid #b6d09715}.wilderness svg{opacity:.85}}
 
 .wall-scroll{overflow:auto;max-height:65vh;margin-top:12px;border-radius:14px}.wall-scroll .wall-frame{max-width:none}.wall-frame img{pointer-events:none}.hold-marker{font-family:inherit;font-size:11px;min-width:36px;width:36px;height:36px;color:#12251a!important;box-shadow:0 0 0 2px #0d1915}.hold-marker:active{transform:translate(-50%,-50%) scale(.95)}.hold-marker.hand{background:#f2f4e9}.hold-marker.foot{background:#f1b78b;border-radius:6px}.hold-marker.finish{background:#c5ed79}.hold-marker.start{background:#c6b8ee}.hold-marker.mini{min-width:13px;width:13px;height:13px}#wallCursor{display:none;position:absolute;left:50%;top:50%;width:18px;height:18px;border:2px dashed white;transform:translate(-50%,-50%);pointer-events:none}#wallFrame:focus #wallCursor{display:block}#hold-list{padding-left:20px;max-height:190px;overflow:auto}#hold-list li{padding:5px}#hold-list button{width:auto;margin-left:12px;padding:6px 12px;min-height:44px}.wall-actions{flex-wrap:wrap}.wall-actions button{min-width:110px}#wall-help{margin-top:12px}#wall-zoom{width:100%;appearance:auto;min-height:44px}.guide-btn{font:inherit;font-size:.75rem;min-height:44px;background:var(--panel-alt);color:var(--chalk);border:1px solid var(--line);border-radius:10px;padding:5px 9px}.check-item{flex-wrap:wrap}.check-item .txt{flex:1;min-width:110px}.check-item .box{min-width:32px;min-height:32px}.timer-btn{min-width:44px;min-height:44px}.diagram-panel.active{position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:min(520px,calc(100% - 24px));max-height:88vh;overflow:auto;z-index:150;background:var(--bg-alt);padding:20px;border:1px solid var(--line);border-radius:24px;box-shadow:0 0 0 100vmax #000b}.diagram-panel svg{width:100%;height:auto;max-height:55vh}.diagram-panel .cue{font-size:1rem;line-height:1.6;max-width:440px}.climb-detail .close{width:44px;height:44px}.climb-detail-info>.btn{margin-top:10px}
+
+.gym-launch{margin-bottom:22px;text-align:left;background:#c6b8ee}.gym-launch span{display:block;font-size:.76rem;font-weight:400;margin-top:3px}.gym-big{min-height:90px;font-size:1.2rem}.gym-count{font-size:2rem;font-family:'Space Grotesk',sans-serif;margin:18px 0}.gym-rest{margin-top:14px}.backup-card{margin-top:28px}.backup-card p{margin-top:10px}.route-drawing{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}.route-drawing polyline{fill:none;stroke:#f5d17f;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}#wallFrame.draw{touch-action:none;cursor:crosshair}#wallFrame.draw .hold-layer,#wallFrame.pan .hold-layer{pointer-events:none}#wallFrame.draw .hold-marker,#wallFrame.pan .hold-marker{pointer-events:none}#resume-wall{margin-bottom:16px}[hidden]{display:none!important}.gym-spark{animation:sendSpark .45s ease}@keyframes sendSpark{50%{box-shadow:0 0 35px #c5ed7960;transform:scale(1.025)}}
+
+html{background:#101e1a}.wilderness{z-index:0}.app{position:relative;z-index:1}.lightbox,.climb-detail,.toast{z-index:200}
+@media(max-width:799px){.wilderness{height:100svh;background:#263f32}.wilderness svg{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:1440/900;opacity:1;transform:scale(1.08);transform-origin:top center}.wilderness::after{background:linear-gradient(180deg,transparent 0,#101e1a22 150px,#101e1a70 350px,#101e1abd 100%)}.app{background:linear-gradient(180deg,#101e1a08,#101e1a22 220px,#101e1a99 500px)}header.top{background:#101e1a33}.home-hero{margin-top:45px;padding:22px 14px;background:#101e1a9c;border:1px solid #d5e4c526;border-radius:24px;backdrop-filter:blur(4px)}.card,.quick-tile,.stat{background-color:#192b24ed}.quick-tile:first-child{background:var(--accent)}main{padding-left:16px;padding-right:16px}}
+
+.goal-hero .grade-target{display:flex;flex-direction:column;gap:8px;line-height:1.15;margin:12px 0 16px;letter-spacing:-.04em}.goal-hero .project-label{font-size:1rem;line-height:1.5;letter-spacing:.02em;color:var(--muted);font-weight:500}.goal-hero .countdown{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.goal-hero .countdown>*{min-width:0;overflow-wrap:anywhere}.goal-hero .countdown .l{line-height:1.5}.home-hero>div{min-width:0}.home-hero h2,.home-hero p{overflow-wrap:anywhere}.goal-hero .sub{line-height:1.6}.quick-tile>div{min-width:0}.btn{white-space:normal;overflow-wrap:anywhere}.goal-hero .label{line-height:1.5}@media(max-width:360px){.goal-hero{padding:19px}.goal-hero .countdown{grid-template-columns:1fr;gap:14px}.goal-hero .countdown>div{display:flex;align-items:baseline;gap:10px}.home-hero{align-items:flex-start}.home-hero img{width:52px;height:52px}}
 </style>
 </head>
 <body>
@@ -502,7 +509,7 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
         </div>
       </div>
 
-      <div class="quick-tiles">
+      <button class="btn gym-launch" onclick="goTo('gym');renderGym()">At the gym <span>Quick log · rest · notes</span></button><div class="quick-tiles">
         <button class="quick-tile" onclick="goTo('warmup')">
           <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
           <div><div class="label">Start warmup</div><div class="sub">Ease in. Find your rhythm.</div></div>
@@ -532,7 +539,7 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
 
       <div class="goal-hero">
         <div class="label">Goal — by Dec 31, 2026</div>
-        <div class="grade-target">V8<sup>project</sup></div>
+        <div class="grade-target"><span>V8</span><span class="project-label">Your project</span></div>
         <div class="sub" id="goalSub">Log sessions to start tracking progress toward V8.</div>
         <div class="countdown">
           <div><div class="n" id="daysLeft">—</div><div class="l">Days left</div></div>
@@ -683,7 +690,7 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
       <h2 style="margin-bottom:14px;">Journal</h2>
 
       <div class="card">
-        <label>What felt different today? today</label>
+        <label>How did today feel?</label>
         <div class="seg" id="j-mood">
           <button data-v="Great">Great</button>
           <button data-v="Good" class="sel">Good</button>
@@ -704,7 +711,7 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
 
     <!-- ============ SPRAY WALL ============ -->
     <section class="view" id="view-spraywall">
-      <div id="climbListPane">
+      <div id="climbListPane"><button id="resume-wall" class="btn secondary" hidden onclick="resumeWallDraft()">Resume unfinished route</button>
         <h2 style="margin-bottom:4px;">Spray wall</h2>
         <p class="fine-print" style="margin-bottom:14px;">Photograph your wall, tap the holds in order, save it as your own problem.</p>
         <button class="btn" onclick="openClimbCreator()">+ New climb</button>
@@ -746,6 +753,8 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
       </div>
     </section>
 
+<section class="view" id="view-gym"><h2>At the gym</h2><p class="fine-print">One problem at a time. Rest whenever you need.</p><div class="card"><label for="gym-name">Problem / project</label><input id="gym-name" placeholder="Name or wall color" oninput="updateGym()"><label for="gym-grade">Grade</label><select id="gym-grade" onchange="updateGym()"><option>V0</option><option>V1</option><option>V2</option><option>V3</option><option>V4</option><option>V5</option><option>V6</option><option>V7</option><option>V8</option><option>V9</option><option>V10</option></select><p id="gym-count" class="gym-count" role="status"></p><div class="quick-tiles"><button class="btn gym-big" onclick="gymAttempt()">+ Attempt</button><button class="btn gym-big secondary" onclick="gymSend()" id="gym-send">Sent it</button></div><button class="btn secondary" onclick="gymUndo()">Undo attempt</button><button class="btn secondary gym-rest" onclick="gymRest()" id="gym-rest">Start rest</button><p id="rest-clock" class="gym-count" aria-label="Elapsed rest time">00:00</p><label for="gym-note">What clicked? What will you try next?</label><textarea id="gym-note" oninput="updateGym()"></textarea><button class="btn" onclick="saveGym()">Save problem</button><p id="gym-status" role="status"></p></div><button class="btn secondary" onclick="goTo('dashboard')">Back to home</button></section>
+<div class="card backup-card"><h3>Your data, kept close.</h3><p class="fine-print">Download a backup with logs, journal, wall photos, route drawings, and drafts. Keep it somewhere safe before switching phones.</p><div class="wall-actions"><button class="btn secondary" onclick="exportBackup()">Download backup</button><button class="btn secondary" onclick="document.getElementById('backup-file').click()">Restore backup</button></div><input hidden id="backup-file" type="file" accept="application/json,.json" onchange="restoreBackup(event)"><p id="data-status" role="status" aria-live="polite"></p><p id="draft-status" role="status" class="fine-print"></p></div>
   </main>
 
   <nav class="tabs">
@@ -793,7 +802,7 @@ header.top{background:#101e1a33}.home-hero{min-height:155px}
     <div class="row"><h3 id="climbDetailName"></h3><span class="grade-badge" id="climbDetailGrade"></span></div>
     <p class="fine-print" id="climbDetailNotes"></p>
     <div class="divider"></div>
-    <button class="btn secondary" onclick="editCurrentClimb()">Edit climb</button><button class="btn secondary" onclick="editCurrentClimb(true)">New climb on this wall</button><button class="btn danger-outline" onclick="deleteClimbEntry()">Delete climb</button>
+    <button class="btn secondary" onclick="exportRouteImage()">Download route image</button><button class="btn secondary" onclick="editCurrentClimb()">Edit climb</button><button class="btn secondary" onclick="editCurrentClimb(true)">New climb on this wall</button><button class="btn danger-outline" onclick="deleteClimbEntry()">Delete climb</button>
   </div>
 </div>
 
@@ -885,7 +894,7 @@ function autoResetDaily(){
 }
 
 /* ---------------- nav ---------------- */
-function goTo(view){
+function goTo(view){if(draftReady)flushDraft();
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-'+view).classList.add('active');
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
@@ -918,7 +927,8 @@ function toggleSwitch(el, isInjury){
 }
 function gradeNum(g){ return parseInt(g.replace('V',''),10); }
 
-function saveSession(){
+let sessionSaving=false;
+async function saveSession(){if(sessionSaving)return;sessionSaving=true;try{
   const sessions = load(KEY_SESSIONS, []);
   const focusBtn = document.querySelector('#f-focus button.sel');
   const entry = {
@@ -931,8 +941,8 @@ function saveSession(){
     notes: document.getElementById('f-notes').value.trim(),
   };
   sessions.unshift(entry);
-  save(KEY_SESSIONS, sessions);
-  savePhotos(entry.id, pendingPhotos);
+  await savePhotos(entry.id,pendingPhotos);
+  try{localStorage.setItem(KEY_SESSIONS,JSON.stringify(sessions));}catch(e){await deletePhotosFor(entry.id);throw e;}
 
   if(document.getElementById('f-injury').classList.contains('on')){
     save(KEY_INJURY, true);
@@ -944,10 +954,11 @@ function saveSession(){
   document.getElementById('f-sent').classList.remove('on');
   document.getElementById('f-injury').classList.remove('on');
   pendingPhotos = [];
-  renderPendingPhotos();
+  renderPendingPhotos();scheduleDraft();
 
   applyInjuryFlagUI();
   goTo('dashboard');
+}catch(e){alert('Could not save the session. Your draft is still here.');}finally{sessionSaving=false}
 }
 
 async function deleteSession(id){
@@ -1126,11 +1137,12 @@ let dbPromise = null;
 function getDB(){
   if(dbPromise) return dbPromise;
   dbPromise = new Promise((resolve, reject)=>{
-    const req = indexedDB.open('climbos_db', 2);
+    const req = indexedDB.open('climbos_db', 3);
     req.onupgradeneeded = ()=>{
       const db = req.result;
       if(!db.objectStoreNames.contains('photos')) db.createObjectStore('photos');
       if(!db.objectStoreNames.contains('climbs')) db.createObjectStore('climbs');
+      if(!db.objectStoreNames.contains('drafts')) db.createObjectStore('drafts');
     };
     req.onsuccess = ()=> resolve(req.result);
     req.onerror = ()=> reject(req.error);
@@ -1192,7 +1204,7 @@ function removePendingPhoto(idx){
   pendingPhotos.splice(idx,1);
   renderPendingPhotos();
 }
-function renderPendingPhotos(){
+function renderPendingPhotos(){scheduleDraft();
   document.getElementById('photoPreviewGrid').innerHTML = pendingPhotos.map((src,i)=>`
     <div class="photo-chip"><img src="${src}"><button class="x" onclick="removePendingPhoto(${i})">&times;</button></div>
   `).join('');
@@ -1278,10 +1290,10 @@ async function getAllClimbs(){
 let currentWallPhoto = null;
 let currentHolds = [];
 
-let editingClimbId=null, wallZoom=1;
+let editingClimbId=null, wallZoom=1, currentStrokes=[], wallMode="hold", activeStroke=null;
 const photoButtons=()=>`<div class="wall-actions"><button class="btn" onclick="document.getElementById('cw-photo-input').click()">Take photo</button><button class="btn secondary" onclick="document.getElementById('cw-upload-input').click()">Upload photo</button></div>`;
-function openClimbCreator(){
- editingClimbId=null;currentWallPhoto=null;currentHolds=[];wallZoom=1;
+function openClimbCreator(preserveDraft=false){if(!preserveDraft&&wallDraft&&!confirm('Start a new route? This replaces your unfinished route draft.'))return;
+ editingClimbId=null;currentWallPhoto=null;currentHolds=[];currentStrokes=[];wallZoom=1;wallMode="hold";
  document.getElementById('cw-name').value='';document.getElementById('cw-grade').value='V4';document.getElementById('cw-notes').value='';
  document.getElementById('cw-status').textContent='';
  document.getElementById('cw-photo-area').innerHTML=photoButtons();
@@ -1289,30 +1301,31 @@ function openClimbCreator(){
  document.querySelector('#climbEditorPane h2').textContent='New climb';
  document.querySelector('#cw-photo-area button').focus();
 }
-function closeClimbCreator(){document.getElementById('climbEditorPane').style.display='none';document.getElementById('climbListPane').style.display='block';renderClimbList();}
+function closeClimbCreator(){flushDraft();document.getElementById('climbEditorPane').style.display='none';document.getElementById('climbListPane').style.display='block';renderClimbList();}
 async function handleWallPhoto(evt){
  const file=evt.target.files?.[0];if(!file)return;if(currentWallPhoto&&currentHolds.length&&!confirm('Replace the photo and remove its marked holds?')){evt.target.value='';return;}
  const status=document.getElementById('cw-status');status.textContent='Preparing photo…';
- try{const photo=await resizeImage(file,1800,.88);currentWallPhoto=photo;currentHolds=[];wallZoom=1;renderWallEditor();status.textContent='Photo ready. Choose a hold type, then tap the wall.';}
+ try{const photo=await resizeImage(file,1800,.88);currentWallPhoto=photo;currentHolds=[];currentStrokes=[];wallZoom=1;renderWallEditor();status.textContent='Photo ready. Choose a hold type, then tap the wall.';}
  catch(e){status.textContent='Could not open that photo. Try a JPG or PNG.';}finally{evt.target.value='';}
 }
 function renderWallEditor(){
  document.getElementById('cw-photo-area').innerHTML=`${photoButtons()}
+ <label for="wall-mode">Editor tool</label><select id="wall-mode" onchange="setWallMode(this.value)"><option value="hold">Mark holds</option><option value="draw">Draw route</option><option value="pan">Pan photo</option></select><p class="fine-print">Draw route: drag your finger or mouse over the photo. Use Pan photo to scroll when zoomed. Keyboard: arrow keys move the cursor; Enter adds a route point; Escape ends the line.</p><div class="wall-actions"><button class="btn secondary" onclick="undoStroke()">Undo line</button><button class="btn secondary" onclick="clearStrokes()">Clear drawing</button></div>
  <label for="hold-type">Next hold type</label><select id="hold-type"><option value="start">Start (S)</option><option value="hand">Hand (H)</option><option value="foot">Foot (T)</option><option value="finish">Finish (F)</option></select>
  <p class="fine-print" id="wall-help">Tap to add a hold. Tap a marker to remove it. Zoom for precision; scroll to pan. Keyboard: focus the wall, use arrow keys to position the cursor, Enter to place a hold.</p>
  <label for="wall-zoom">Zoom</label><input id="wall-zoom" type="range" min="1" max="3" step=".25" value="${wallZoom}" oninput="setWallZoom(this.value)">
  <div class="wall-scroll"><div class="wall-frame" id="wallFrame" tabindex="0" role="group" aria-label="Wall hold editor" aria-describedby="wall-help" style="width:${wallZoom*100}%">
- <img src="${currentWallPhoto}" id="wallImg" alt="Your spray wall"><div class="hold-layer" id="wallHoldLayer"></div><div id="wallCursor" aria-hidden="true"></div></div></div>
+ <img src="${currentWallPhoto}" id="wallImg" alt="Your spray wall"><svg id="wallDrawing" class="route-drawing" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg><div class="hold-layer" id="wallHoldLayer"></div><div id="wallCursor" aria-hidden="true"></div></div></div>
  <div class="wall-actions"><button class="btn secondary" onclick="undoHold()">Undo last</button><button class="btn secondary" onclick="clearHolds()">Clear holds</button></div><p id="hold-count" role="status"></p><ol id="hold-list"></ol>`;
  document.getElementById('wallFrame').addEventListener('click',onWallTap);
  document.getElementById('wallFrame').addEventListener('keydown',wallKey);
- renderHoldLayer();
+ setupDrawing();renderHoldLayer();renderDrawing();
 }
 function setWallZoom(value){wallZoom=Number(value);document.getElementById('wallFrame').style.width=wallZoom*100+'%';}
 let cursorX=50,cursorY=50;
-function wallKey(e){if(e.target!==e.currentTarget)return;const moves={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};if(moves[e.key]){e.preventDefault();cursorX=Math.max(0,Math.min(100,cursorX+moves[e.key][0]));cursorY=Math.max(0,Math.min(100,cursorY+moves[e.key][1]));}else if(e.key==='Enter'||e.key===' '){e.preventDefault();addHold(cursorX,cursorY);}else return;const c=document.getElementById('wallCursor');c.style.left=cursorX+'%';c.style.top=cursorY+'%';}
+function wallKey(e){if(e.target!==e.currentTarget)return;const moves={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};if(moves[e.key]){e.preventDefault();cursorX=Math.max(0,Math.min(100,cursorX+moves[e.key][0]));cursorY=Math.max(0,Math.min(100,cursorY+moves[e.key][1]));}else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(wallMode==='draw'){if(!activeStroke){activeStroke=[];currentStrokes.push(activeStroke)}activeStroke.push({x:cursorX,y:cursorY});renderDrawing();scheduleDraft();}else if(wallMode==='hold')addHold(cursorX,cursorY);}else if(e.key==='Escape'){activeStroke=null;return;}else return;const c=document.getElementById('wallCursor');c.style.left=cursorX+'%';c.style.top=cursorY+'%';}
 function addHold(x,y){currentHolds.push({x,y,type:document.getElementById('hold-type').value});renderHoldLayer();}
-function onWallTap(e){if(e.target.closest('button'))return;const r=document.getElementById('wallImg').getBoundingClientRect();const x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100;if(x>=0&&x<=100&&y>=0&&y<=100)addHold(x,y);}
+function onWallTap(e){if(wallMode!=='hold'||e.target.closest('button'))return;const r=document.getElementById('wallImg').getBoundingClientRect();const x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100;if(x>=0&&x<=100&&y>=0&&y<=100)addHold(x,y);}
 function undoHold(){currentHolds.pop();renderHoldLayer();}
 function clearHolds(){if(currentHolds.length&&!confirm('Remove all marked holds?'))return;currentHolds=[];renderHoldLayer();}
 function removeHold(i){currentHolds.splice(i,1);renderHoldLayer();document.getElementById('wallFrame').focus();}
@@ -1320,15 +1333,15 @@ function holdType(h,i,holds){return h.type||(i===0?'start':i===holds.length-1?'f
 function holdMarkersHtml(holds,mini,editable=false){
  return holds.map((h,i)=>{const type=holdType(h,i,holds),label={start:'S',hand:'H',foot:'T',finish:'F'}[type];const tag=editable?'button':'span';return `<${tag} ${editable?`type="button" onclick="event.stopPropagation();removeHold(${i})" aria-label="Remove ${type} hold ${i+1}"`:''} class="hold-marker ${type}${mini?' mini':''}" style="left:${h.x}%;top:${h.y}%">${mini?'':label+(i+1)}</${tag}>`;}).join('');
 }
-function renderHoldLayer(){const layer=document.getElementById('wallHoldLayer');if(!layer)return;layer.innerHTML=holdMarkersHtml(currentHolds,false,true);document.getElementById('hold-count').textContent=currentHolds.length+' holds marked';document.getElementById('hold-list').innerHTML=currentHolds.map((h,i)=>`<li>${holdType(h,i,currentHolds)} ${i+1} <button class="btn secondary" onclick="removeHold(${i})">Remove</button></li>`).join('');}
+function renderHoldLayer(){const layer=document.getElementById('wallHoldLayer');if(!layer)return;layer.innerHTML=holdMarkersHtml(currentHolds,false,true);scheduleDraft();document.getElementById('hold-count').textContent=currentHolds.length+' holds marked';document.getElementById('hold-list').innerHTML=currentHolds.map((h,i)=>`<li>${holdType(h,i,currentHolds)} ${i+1} <button class="btn secondary" onclick="removeHold(${i})">Remove</button></li>`).join('');}
 async function saveClimbEntry(){
  const status=document.getElementById('cw-status');
  if(!currentWallPhoto){status.textContent='Add a wall photo first.';return;}
  if(!currentHolds.some((h,i)=>holdType(h,i,currentHolds)==='start')||!currentHolds.some((h,i)=>holdType(h,i,currentHolds)==='finish')){status.textContent='Mark at least one start and one finish hold.';return;}
- try{await saveClimb({id:editingClimbId||Date.now(),name:document.getElementById('cw-name').value.trim()||'Untitled climb',grade:document.getElementById('cw-grade').value,notes:document.getElementById('cw-notes').value.trim(),photo:currentWallPhoto,holds:currentHolds,date:new Date().toISOString().slice(0,10)});closeClimbCreator();}
+ try{await saveClimb({id:editingClimbId||Date.now(),name:document.getElementById('cw-name').value.trim()||'Untitled climb',grade:document.getElementById('cw-grade').value,notes:document.getElementById('cw-notes').value.trim(),photo:currentWallPhoto,holds:currentHolds,strokes:currentStrokes,date:new Date().toISOString().slice(0,10)});await clearWallDraft();closeClimbCreator();}
  catch(e){status.textContent='Could not save. Your photo and holds are still here. Device storage may be full or unavailable.';}
 }
-async function editCurrentClimb(copy=false){try{const c=(await getAllClimbs()).find(c=>c.id===openClimbId);if(!c)return;closeClimbDetail();openClimbCreator();editingClimbId=copy?null:c.id;currentWallPhoto=c.photo;currentHolds=copy?[]:c.holds.map(h=>({...h}));document.getElementById('cw-name').value=copy?'':c.name;document.getElementById('cw-grade').value=c.grade;document.getElementById('cw-notes').value=copy?'':c.notes;document.querySelector('#climbEditorPane h2').textContent=copy?'New climb':'Edit climb';renderWallEditor();}catch(e){alert('Could not load this climb. Please try again.');}}
+async function editCurrentClimb(copy=false){try{const c=(await getAllClimbs()).find(c=>c.id===openClimbId);if(!c)return;closeClimbDetail();openClimbCreator(true);editingClimbId=copy?null:c.id;currentWallPhoto=c.photo;currentHolds=copy?[]:c.holds.map(h=>({...h}));currentStrokes=copy?[]:structuredClone(c.strokes||[]);document.getElementById('cw-name').value=copy?'':c.name;document.getElementById('cw-grade').value=c.grade;document.getElementById('cw-notes').value=copy?'':c.notes;document.querySelector('#climbEditorPane h2').textContent=copy?'New climb':'Edit climb';renderWallEditor();}catch(e){alert('Could not load this climb. Please try again.');}}
 async function renderClimbList(){
   const grid = document.getElementById('climbGrid');
   let climbs;try{climbs=await getAllClimbs();}catch(e){grid.textContent='Saved climbs could not be loaded. Try reopening the app.';return;}
@@ -1336,7 +1349,7 @@ async function renderClimbList(){
     <button class="climb-card" onclick="openClimbDetail(${c.id})">
       <div class="wall-frame">
         <img src="${c.photo}" alt="${escapeHtml(c.name)}">
-        <div class="hold-layer">${holdMarkersHtml(c.holds, true)}</div>
+        <div class="hold-layer">${drawingSvg(c.strokes||[])}${holdMarkersHtml(c.holds, true)}</div>
       </div>
       <div class="climb-card-info">
         <div class="name">${escapeHtml(c.name)}</div>
@@ -1354,7 +1367,7 @@ async function openClimbDetail(id){
   document.getElementById('climbDetailName').textContent = c.name;
   document.getElementById('climbDetailGrade').textContent = c.grade;
   document.getElementById('climbDetailNotes').textContent = c.notes || 'No notes added.';
-  document.getElementById('climbDetailHolds').innerHTML = holdMarkersHtml(c.holds, false);
+  document.getElementById('climbDetailHolds').innerHTML = drawingSvg(c.strokes||[])+holdMarkersHtml(c.holds, false);
   const modal=document.getElementById('climbDetail');modal.classList.add('active');modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-labelledby','climbDetailName');modal.querySelector('button').focus();
 }
 function closeClimbDetail(){
@@ -1382,7 +1395,7 @@ function saveJournalEntry(){
     text
   });
   save(KEY_JOURNAL, entries);
-  document.getElementById('j-text').value = '';
+  document.getElementById('j-text').value = '';scheduleDraft();
   renderJournal();
 }
 function deleteJournalEntry(id){
@@ -1452,6 +1465,76 @@ function setDelta(id, diff, suffix){
 }
 
 document.addEventListener('keydown',e=>{const modal=document.querySelector('.diagram-panel.active')||document.querySelector('.climb-detail.active');if(!modal)return;if(e.key==='Escape'){if(modal.id==='diagramPanel')hideDiagram();else closeClimbDetail();}if(e.key==='Tab'){const items=modal.querySelectorAll('button,[href],input,select,textarea,[tabindex="0"]');const first=items[0],last=items[items.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
+/* Drawing tools: points stay in photo-relative coordinates at any zoom. */
+function strokeMarkup(strokes){return strokes.filter(s=>s.length>1).map(s=>`<polyline points="${s.map(p=>`${p.x},${p.y}`).join(' ')}"/>`).join('');}
+function drawingSvg(strokes){return `<svg class="route-drawing" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${strokeMarkup(strokes)}</svg>`;}
+function renderDrawing(){const el=document.getElementById('wallDrawing');if(el)el.innerHTML=strokeMarkup(currentStrokes);}
+function setWallMode(mode){wallMode=mode;activeStroke=null;const f=document.getElementById('wallFrame');f.classList.toggle('draw',mode==='draw');f.classList.toggle('pan',mode==='pan');}
+function setupDrawing(){const f=document.getElementById('wallFrame');document.getElementById('wall-mode').value=wallMode;setWallMode(wallMode);let pointer=null;
+ const point=e=>{const r=f.getBoundingClientRect();return{x:Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100)),y:Math.max(0,Math.min(100,(e.clientY-r.top)/r.height*100))}};
+ f.addEventListener('pointerdown',e=>{if(wallMode!=='draw'||!e.isPrimary||e.button!==0)return;e.preventDefault();pointer=e.pointerId;f.setPointerCapture(pointer);activeStroke=[point(e)];currentStrokes.push(activeStroke)});
+ f.addEventListener('pointermove',e=>{if(pointer!==e.pointerId||!activeStroke)return;e.preventDefault();if(activeStroke.length<5000)activeStroke.push(point(e));renderDrawing()});
+ const end=e=>{if(pointer!==e.pointerId)return;if(activeStroke&&activeStroke.length===1)currentStrokes.pop();activeStroke=null;pointer=null;renderDrawing();scheduleDraft()};f.addEventListener('pointerup',end);f.addEventListener('pointercancel',end);
+}
+function undoStroke(){currentStrokes.pop();activeStroke=null;renderDrawing();scheduleDraft();}
+function clearStrokes(){if(currentStrokes.length&&!confirm('Clear the route drawing? Holds will stay.'))return;currentStrokes=[];activeStroke=null;renderDrawing();scheduleDraft();}
+async function exportRouteImage(){try{const c=(await getAllClimbs()).find(c=>c.id===openClimbId);if(!c)return;const img=new Image();await new Promise((ok,no)=>{img.onload=ok;img.onerror=no;img.src=c.photo});const canvas=document.createElement('canvas');canvas.width=img.naturalWidth;canvas.height=img.naturalHeight+100;const g=canvas.getContext('2d');g.fillStyle='#192b24';g.fillRect(0,0,canvas.width,canvas.height);g.drawImage(img,0,0);g.strokeStyle='#f5d17f';g.lineWidth=Math.max(4,canvas.width/200);g.lineCap='round';g.lineJoin='round';for(const stroke of c.strokes||[]){g.beginPath();stroke.forEach((p,i)=>g[i?'lineTo':'moveTo'](p.x*canvas.width/100,p.y*img.naturalHeight/100));g.stroke()}const radius=Math.max(15,canvas.width/45);c.holds.forEach((h,i)=>{const t=holdType(h,i,c.holds),x=h.x*canvas.width/100,y=h.y*img.naturalHeight/100;g.fillStyle={start:'#c6b8ee',finish:'#c5ed79',hand:'#f2f4e9',foot:'#f1b78b'}[t];g.beginPath();g.arc(x,y,radius,0,Math.PI*2);g.fill();g.fillStyle='#102018';g.font=`bold ${radius}px sans-serif`;g.textAlign='center';g.textBaseline='middle';g.fillText({start:'S',finish:'F',hand:'H',foot:'T'}[t]+(i+1),x,y)});g.fillStyle='#f2f4e9';g.textAlign='left';g.font='bold 28px sans-serif';g.fillText(`${c.name} · ${c.grade}`,24,img.naturalHeight+45,canvas.width-48);g.font='16px sans-serif';g.fillText('ClimbOS · S start / H hand / T foot / F finish',24,img.naturalHeight+77,canvas.width-48);canvas.toBlob(blob=>{if(blob)downloadBlob(blob,'climbos-route.png')},'image/png')}catch(e){alert('Could not export this route image. Please try again.')}}
+function downloadBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)}
+/* One serialized IndexedDB draft write queue, including large photo data. */
+let draftWriteFailed=false,draftReady=false,draftTimer, draftQueue=Promise.resolve(),wallDraft=null;
+function dbRead(store,key){return getDB().then(db=>new Promise((ok,no)=>{const r=db.transaction(store).objectStore(store).get(key);r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}))}
+function dbWrite(store,key,value){return getDB().then(db=>new Promise((ok,no)=>{const tx=db.transaction(store,'readwrite');if(value===undefined)tx.objectStore(store).delete(key);else tx.objectStore(store).put(value,key);tx.oncomplete=ok;tx.onerror=tx.onabort=()=>no(tx.error)}))}
+function sessionDraft(){return{date:document.getElementById('f-date').value,grade:document.getElementById('f-grade').value,attempts:document.getElementById('f-attempts').value,notes:document.getElementById('f-notes').value,sent:document.getElementById('f-sent').classList.contains('on'),injury:document.getElementById('f-injury').classList.contains('on'),focus:document.querySelector('#f-focus .sel')?.dataset.v,photos:[...pendingPhotos],journal:document.getElementById('j-text').value,mood:document.querySelector('#j-mood .sel')?.dataset.v}}
+function wallSnapshot(){return{photo:currentWallPhoto,holds:structuredClone(currentHolds),strokes:structuredClone(currentStrokes),id:editingClimbId,name:document.getElementById('cw-name').value,grade:document.getElementById('cw-grade').value,notes:document.getElementById('cw-notes').value}}
+function scheduleDraft(){if(!draftReady)return;clearTimeout(draftTimer);draftTimer=setTimeout(flushDraft,250)}
+function flushDraft(){clearTimeout(draftTimer);if(!draftReady)return draftQueue;const session=sessionDraft();if(document.getElementById('climbEditorPane').style.display!=='none'&&currentWallPhoto)wallDraft=wallSnapshot();const snapshot={session,wall:wallDraft};draftQueue=draftQueue.catch(()=>{}).then(()=>dbWrite('drafts','active',snapshot)).then(()=>{draftWriteFailed=false;document.getElementById('draft-status').textContent='Drafts saved on this device.';document.getElementById('resume-wall').hidden=!wallDraft}).catch(()=>{draftWriteFailed=true;document.getElementById('draft-status').textContent='Draft could not be saved. Keep this page open and free device storage.'});return draftQueue}
+async function clearWallDraft(){wallDraft=null;currentWallPhoto=null;currentHolds=[];currentStrokes=[];await flushDraft();document.getElementById('resume-wall').hidden=true}
+function resumeWallDraft(){if(!wallDraft)return;const d=structuredClone(wallDraft);goTo('spraywall');openClimbCreator(true);currentWallPhoto=d.photo;currentHolds=d.holds||[];currentStrokes=d.strokes||[];editingClimbId=d.id||null;document.getElementById('cw-name').value=d.name||'';document.getElementById('cw-grade').value=d.grade||'V4';document.getElementById('cw-notes').value=d.notes||'';renderWallEditor();}
+async function initDrafts(){try{const d=await dbRead('drafts','active');if(d?.session){const f=d.session;for(const [id,key] of [['f-date','date'],['f-grade','grade'],['f-attempts','attempts'],['f-notes','notes'],['j-text','journal']])if(f[key]!==undefined)document.getElementById(id).value=f[key];document.getElementById('f-sent').classList.toggle('on',!!f.sent);document.getElementById('f-injury').classList.toggle('on',!!f.injury);document.querySelectorAll('#f-focus button').forEach(b=>b.classList.toggle('sel',b.dataset.v===f.focus));document.querySelectorAll('#j-mood button').forEach(b=>b.classList.toggle('sel',b.dataset.v===f.mood));pendingPhotos=f.photos||[];renderPendingPhotos()}wallDraft=d?.wall||null;document.getElementById('resume-wall').hidden=!wallDraft;}catch(e){document.getElementById('draft-status').textContent='Draft storage is unavailable.'}finally{draftReady=true}}
+document.addEventListener('input',scheduleDraft);document.addEventListener('change',scheduleDraft);document.addEventListener('click',()=>setTimeout(scheduleDraft,0));document.addEventListener('visibilitychange',()=>{if(document.hidden)flushDraft()});window.addEventListener('pagehide',flushDraft);
+/* Quick gym log; rest is elapsed time, with no required duration. */
+let gym=load('climbos_gym_draft',{name:'',grade:'V4',attempts:0,sent:false,note:'',restSince:null});
+function persistGym(){try{localStorage.setItem('climbos_gym_draft',JSON.stringify(gym));document.getElementById('gym-status').textContent='Draft saved.'}catch(e){document.getElementById('gym-status').textContent='Draft not saved: device storage is unavailable.'}}
+function updateGym(){gym.name=document.getElementById('gym-name').value;gym.grade=document.getElementById('gym-grade').value;gym.note=document.getElementById('gym-note').value;persistGym()}
+function renderGym(){document.getElementById('gym-name').value=gym.name;document.getElementById('gym-grade').value=gym.grade;document.getElementById('gym-note').value=gym.note;document.getElementById('gym-count').textContent=gym.attempts+' attempt'+(gym.attempts===1?'':'s');document.getElementById('gym-send').textContent=gym.sent?'Sent ✓':'Sent it';document.getElementById('gym-send').setAttribute('aria-pressed',String(gym.sent));document.getElementById('gym-rest').textContent=gym.restSince?'End rest':'Start rest';renderRest()}
+function gymAttempt(){gym.attempts++;persistGym();renderGym()}
+function gymUndo(){gym.attempts=Math.max(0,gym.attempts-1);if(!gym.attempts)gym.sent=false;persistGym();renderGym()}
+function gymSend(){gym.sent=!gym.sent;if(gym.sent&&gym.attempts===0)gym.attempts=1;persistGym();renderGym();const b=document.getElementById('gym-send');b.classList.remove('gym-spark');void b.offsetWidth;if(gym.sent)b.classList.add('gym-spark')}
+function gymRest(){gym.restSince=gym.restSince?null:Date.now();persistGym();renderGym()}
+function renderRest(){document.getElementById('rest-clock').textContent=fmtTime(gym.restSince?Math.max(0,Math.floor((Date.now()-gym.restSince)/1000)):0)}
+setInterval(()=>{if(gym.restSince)renderRest()},1000);
+function saveGym(){updateGym();if(!gym.attempts){document.getElementById('gym-status').textContent='Add an attempt before saving.';return}try{const sessions=load(KEY_SESSIONS,[]);sessions.unshift({id:Date.now(),date:new Date().toLocaleDateString('en-CA'),focus:'Project',grade:gym.grade,attempts:gym.attempts,sent:gym.sent,notes:[gym.name,gym.note].filter(Boolean).join(' — ')});localStorage.setItem(KEY_SESSIONS,JSON.stringify(sessions));gym={name:'',grade:gym.grade,attempts:0,sent:false,note:'',restSince:null};persistGym();renderGym();document.getElementById('gym-status').textContent='Problem saved to your training log.';renderDashboard()}catch(e){document.getElementById('gym-status').textContent='Could not save. Your draft is still here.'}}
+/* Portable backup: merge records; existing IDs win, so restore never overwrites a saved record. */
+const BACKUP_KEYS=[KEY_SESSIONS,KEY_JOURNAL,KEY_INJURY,KEY_WARM,KEY_COOL,KEY_WARM_DATE,KEY_COOL_DATE,'climbos_gym_draft'];
+async function exportBackup(){const status=document.getElementById('data-status');try{await flushDraft();if(draftWriteFailed)throw Error('Draft unavailable');const [climbs,photos,drafts]=await Promise.all([getAllClimbs(),getAllPhotosMap(),dbRead('drafts','active')]);const local={};for(const key of BACKUP_KEYS){const v=localStorage.getItem(key);if(v!==null)local[key]=JSON.parse(v)}downloadBlob(new Blob([JSON.stringify({format:'climbos-backup',version:1,created:new Date().toISOString(),local,climbs,photos,drafts:drafts||null})],{type:'application/json'}),'climbos-backup-'+new Date().toISOString().slice(0,10)+'.json');status.textContent='Backup download started. Keep the file before changing phones.'}catch(e){status.textContent='Could not create a complete backup. Please try again.'}}
+function validateBackup(b){
+ const fail=()=>{throw new Error('Invalid backup file')},obj=x=>x&&typeof x==='object'&&!Array.isArray(x),str=x=>typeof x==='string',id=x=>Number.isSafeInteger(x)&&x>0,grade=x=>/^V(?:[0-9]|10)$/.test(x),date=x=>str(x)&&/^\d{4}-\d{2}-\d{2}$/.test(x),photo=x=>str(x)&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(x);
+ if(!obj(b)||b.format!=='climbos-backup'||b.version!==1||!obj(b.local)||!Array.isArray(b.climbs)||!obj(b.photos))fail();
+ for(const key of Object.keys(b.local))if(!BACKUP_KEYS.includes(key))fail();
+ for(const k of [KEY_SESSIONS,KEY_JOURNAL])if(k in b.local&&!Array.isArray(b.local[k]))fail();
+ for(const row of b.local[KEY_SESSIONS]||[]){if(!obj(row)||!id(row.id)||!date(row.date)||!grade(row.grade)||!Number.isSafeInteger(row.attempts)||row.attempts<1||typeof row.sent!=='boolean'||!str(row.notes)||!['Power','Technique','Endurance','Project'].includes(row.focus))fail()}
+ for(const row of b.local[KEY_JOURNAL]||[]){if(!obj(row)||!id(row.id)||!date(row.date)||!str(row.text)||!['Great','Good','Rough','Injured'].includes(row.mood))fail()}
+ const points=a=>Array.isArray(a)&&a.length<=5000&&a.every(p=>obj(p)&&Number.isFinite(p.x)&&p.x>=0&&p.x<=100&&Number.isFinite(p.y)&&p.y>=0&&p.y<=100);
+ const wall=c=>obj(c)&&photo(c.photo)&&str(c.name)&&grade(c.grade)&&str(c.notes)&&points(c.holds)&&c.holds.every(h=>!h.type||['start','finish','hand','foot'].includes(h.type))&&(!c.strokes||(Array.isArray(c.strokes)&&c.strokes.length<=1000&&c.strokes.every(points)));
+ for(const c of b.climbs)if(!wall(c)||!id(c.id))fail();
+ for(const [k,imgs] of Object.entries(b.photos))if(!id(Number(k))||!Array.isArray(imgs)||!imgs.every(photo))fail();
+ if(b.drafts){if(!obj(b.drafts))fail();if(b.drafts.wall&&!wall(b.drafts.wall))fail();const f=b.drafts.session;if(f&&(!obj(f)||!Array.isArray(f.photos)||!f.photos.every(photo)||!str(f.notes)||!str(f.journal)||!grade(f.grade)))fail()}
+ if(b.local.climbos_gym_draft){const g=b.local.climbos_gym_draft;if(!obj(g)||!str(g.name)||!str(g.note)||!grade(g.grade)||!Number.isSafeInteger(g.attempts)||g.attempts<0||typeof g.sent!=='boolean'||!(g.restSince===null||Number.isFinite(g.restSince)))fail()}
+ for(const k of [KEY_WARM,KEY_COOL])if(k in b.local&&(!obj(b.local[k])||!Object.values(b.local[k]).every(v=>typeof v==='boolean')))fail();if(KEY_INJURY in b.local&&typeof b.local[KEY_INJURY]!=='boolean')fail();for(const k of [KEY_WARM_DATE,KEY_COOL_DATE])if(k in b.local&&!date(b.local[k]))fail();return b;
+}
+async function restoreBackup(evt){const file=evt.target.files?.[0];if(!file)return;const status=document.getElementById('data-status');let locked=false;
+ try{if(file.size>150*1024*1024)throw Error('Backup exceeds 150 MB');const b=validateBackup(JSON.parse(await file.text()));if(!confirm(`Restore ${b.climbs.length} climbs and ${(b.local[KEY_SESSIONS]||[]).length} log entries? Existing saved entries and current drafts will be kept.`))return;
+ await flushDraft();draftReady=false;document.querySelector('.app').inert=true;locked=true;
+ const [oldClimbs,oldPhotos,oldDrafts]=await Promise.all([getAllClimbs(),getAllPhotosMap(),dbRead('drafts','active')]);const ids=new Set(oldClimbs.map(c=>c.id));const additions=b.climbs.filter(c=>!ids.has(c.id));const oldLocal={};
+ for(const k of BACKUP_KEYS)oldLocal[k]=localStorage.getItem(k);
+ try{for(const k of BACKUP_KEYS){if(!(k in b.local))continue;let value=b.local[k];if([KEY_SESSIONS,KEY_JOURNAL].includes(k)){const current=load(k,[]),present=new Set(current.map(r=>r.id));value=[...current,...value.filter(r=>!present.has(r.id))].sort((a,b)=>b.id-a.id)}else if(oldLocal[k]!==null)continue;localStorage.setItem(k,JSON.stringify(value))}
+ const db=await getDB();await new Promise((ok,no)=>{const tx=db.transaction(['climbs','photos','drafts'],'readwrite');for(const c of additions)tx.objectStore('climbs').put(c,c.id);for(const [k,imgs] of Object.entries(b.photos))if(!(k in oldPhotos))tx.objectStore('photos').put(imgs,Number(k));if(b.drafts){const existing=oldDrafts||{};const meaningful=f=>f&&(f.notes||f.journal||f.photos?.length||f.sent||Number(f.attempts)>1);tx.objectStore('drafts').put({session:meaningful(existing.session)?existing.session:(b.drafts.session||existing.session),wall:existing.wall||b.drafts.wall||null},'active')}tx.oncomplete=ok;tx.onerror=tx.onabort=()=>no(tx.error)});
+ }catch(e){for(const [k,v] of Object.entries(oldLocal)){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}throw e}
+ gym=load('climbos_gym_draft',gym);await initDrafts();renderGym();renderDashboard();renderJournal();renderAllChecklists();applyInjuryFlagUI();renderClimbList();status.textContent=`Restored backup. Added ${additions.length} climbs; existing entries were kept.`;
+ }catch(e){status.textContent='Restore failed: '+(e.message||'storage unavailable')+'. Current saved entries were kept.'}finally{if(locked){document.querySelector('.app').inert=false;draftReady=true}evt.target.value=''}
+}
+initDrafts();renderGym();
+
 /* ---------------- init ---------------- */
 autoResetDaily();
 renderAllChecklists();

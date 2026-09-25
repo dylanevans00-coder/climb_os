@@ -1,13 +1,15 @@
-ClimbOS — Chalk room edition
+ClimbOS — Outdoors update 3
 
-Upload ALL files in this folder together to the same folder on your HTTPS website, replacing the previous app files. Keep the same website address to retain existing local data.
+Upload every extracted file to the same website folder, replacing the previous files. Keep your existing website address and do not clear browser data. Close and reopen the installed app after updating; refresh the website if an older version remains visible.
 
-Open the live site on your phone and use Add to Home Screen. If you already installed the app, you may need to remove the old shortcut and add it again to refresh the icon. Do not clear website data.
+At the gym: log attempts, toggle a send, time your rest, add notes, then Save problem. Each saved problem becomes an entry in the existing training log.
 
-Offline use works after an initial online visit. Custom Google fonts need an internet connection; system fonts are used when unavailable.
+Spray wall: choose New climb, take or upload a photo, and mark start/finish and any hand/foot holds. Choose Draw route to sketch with your finger or mouse. Use Pan photo to scroll while zoomed. Undo line removes the most recent stroke. The route drawing is saved with the climb. Open a saved climb to edit, reuse its wall photo, or download a route image.
 
-Spray wall: choose New climb, Take photo or Upload photo, choose each hold type and tap its position. Include a start and finish, name it, then Save climb. Open saved climbs to edit them or reuse the wall photo. Saved climbs are stored on this device/browser.
+Drafts: session fields, pending photos, journal text and the unfinished wall route save automatically on this device. Use Resume unfinished route to reopen a wall draft. Gym mode remembers its draft separately. Draft saving occurs shortly after changes; watch the draft status if device storage is unavailable.
 
-Movement guides: tap View guide on warmup/cooldown rows. The three cooldown stretches have new large vector illustrations. All guides are embedded for offline use.
+Backup: Download backup includes saved logs, journal, photos, custom climbs and drawings, and drafts. Restore merges entries without overwriting existing matching IDs. Existing settings and meaningful drafts are preserved. Keep backup files somewhere separate from this browser. There is no cloud synchronization.
 
-Validation: JavaScript syntax and focused editor logic checks passed. Actual phone camera, browser layout, and device storage integration require a device check.
+Mobile: the full valley illustration is now visible at phone widths. The V8 grade and project label sit on separate lines, with wrapping statistics.
+
+Checked in Chromium at 320, 390 and 430 CSS-pixel widths, with normal and 150% text. Verified no horizontal overflow or project-label overlap; photo upload, pointer drawing and reload/resume passed. Data integration checks covered route saves, gym logs, drafts, backup restore, duplicate protection and invalid backup rejection. Physical phone camera and Safari-specific behavior have not been tested.
